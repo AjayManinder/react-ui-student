@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const StudentTable = () => {
-
   const [students, setStudents] = useState([]);
+  const [fetchedStudents, setFetchedStudents] = useState([]); // Store fetched data separately
+  const [searchField, setSearchField] = useState('rollNo');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Fetching all students from the API
   useEffect(() => {
+    // Function to fetch students
     const fetchStudents = async () => {
       try {
-        const response = await fetch('http://localhost:5000/students');
-        if (!response.ok) {
-          throw new Error('Network response was not ok.');
-        }
-        const data = await response.json();
-        setStudents(data);
+        const response = await axios.get('http://localhost:5000/students');
+        setStudents(response.data);
+        setFetchedStudents(response.data); // Store fetched data separately
       } catch (error) {
         console.error('Error fetching students:', error);
       }
@@ -22,27 +22,45 @@ const StudentTable = () => {
     fetchStudents();
   }, []);
 
+  const handleSearch = () => {
+    // Filter students based on search criteria
+    const filteredStudents = fetchedStudents.filter((student) => {
+      if (searchField === 'rollNo') {
+        return student.rollNo.toString().includes(searchTerm);
+      } else if (searchField === 'name') {
+        return student.name.toLowerCase().includes(searchTerm.toLowerCase());
+      } else if (searchField === 'percentage') {
+        return student.percentage.toString().includes(searchTerm);
+      }
+      return false;
+    });
 
-  // Sample student data for demonstration
-  // const [students, setStudents] = useState([
-  //   { rollNo: 1, name: 'Ajay', percentage: '80.0', branch : 'CSE'},
-  //   { rollNo: 2, name: 'Sunny', percentage: '96.0', branch : 'CSE'},
-  //   { rollNo: 3, name: 'Alice', percentage: '67.5', branch : 'EEE'},
-  //   { rollNo: 4, name: 'Maninder', percentage: '86.8', branch : 'ECE'},
-  //   { rollNo: 5, name: 'Alice', percentage: '76.7', branch : 'CSE'},
-  //   // Add more student objects as needed
-  // ]);
+    // Update the displayed students with filtered results
+    setStudents(searchTerm ? filteredStudents : fetchedStudents);
+  };
 
   return (
     <div>
-      <h2>Student Table</h2>
+      <select onChange={(e) => setSearchField(e.target.value)}>
+        <option value="rollNo">Roll No</option>
+        <option value="name">Name</option>
+        <option value="percentage">Percentage</option>
+      </select>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder={`Search by ${searchField}`}
+      />
+      <button onClick={handleSearch}>Search</button>
+
+      {/* Render your table using the 'students' state */}
       <table>
         <thead>
           <tr>
             <th>Roll No</th>
             <th>Name</th>
             <th>Percentage</th>
-            <th>Branch</th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +69,6 @@ const StudentTable = () => {
               <td>{student.rollNo}</td>
               <td>{student.name}</td>
               <td>{student.percentage}</td>
-              <td>{student.branch}</td>
             </tr>
           ))}
         </tbody>
