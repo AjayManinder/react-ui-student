@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import AddStudent from './addStudent';
+import EditStudent from './editStudent';
+import DeleteStudent from './deleteStudent';
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
   const [fetchedStudents, setFetchedStudents] = useState([]); // Store fetched data separately
   const [searchField, setSearchField] = useState('rollNo');
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [selectedStudent, setSelectedStudent] = useState(null);
   useEffect(() => {
     // Function to fetch students
     const fetchStudents = async () => {
@@ -21,6 +23,32 @@ const StudentTable = () => {
 
     fetchStudents();
   }, []);
+
+  const addStudent = (student) => {
+    setStudents([...students, student]);
+  };
+
+  const updateStudentList = (updatedStudent) => {
+    const updatedStudents = students.map((student) => {
+      if (student.rollNo === updatedStudent.rollNo) {
+        return updatedStudent;
+      }
+      return student;
+    });
+    setStudents(updatedStudents);
+  };
+  const editStudent = (student) => {
+    setSelectedStudent(student);
+  };
+
+  const closeModal = () => {
+    setSelectedStudent(null); // Reset selected student state
+  };
+
+  const deleteStudent = (rollNo) => {
+    const updatedStudents = students.filter((student) => student.rollNo !== rollNo);
+    setStudents(updatedStudents);
+  };
 
   const handleSearch = () => {
     // Filter students based on search criteria
@@ -61,6 +89,7 @@ const StudentTable = () => {
             <th>Roll No</th>
             <th>Name</th>
             <th>Percentage</th>
+            <th>Branch</th>
           </tr>
         </thead>
         <tbody>
@@ -69,10 +98,23 @@ const StudentTable = () => {
               <td>{student.rollNo}</td>
               <td>{student.name}</td>
               <td>{student.percentage}</td>
+              <td>{student.branch}</td>
+              <button onClick={() => editStudent(student)}>Edit</button>
+              <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
+
             </tr>
           ))}
         </tbody>
       </table>
+      {selectedStudent && (
+        <EditStudent
+          studentData={selectedStudent}
+          updateStudent={updateStudentList}
+          closeModal={closeModal}
+        />
+      )}
+      <AddStudent addStudent={addStudent} />
+      {/* <DeleteStudent studentId=studentId deleteStudent={deleteStudent} /> */}
     </div>
   );
 };
