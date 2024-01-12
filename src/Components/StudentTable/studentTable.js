@@ -3,19 +3,33 @@ import axios from 'axios';
 import AddStudent from './addStudent';
 import EditStudent from './editStudent';
 import DeleteStudent from './deleteStudent';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import './studentTable.css';
+
+const API_URL = process.env.REACT_APP_API_URL;
+const React_Host = process.env.REACT_APP_React_Host;
+const React_Port = process.env.REACT_APP_React_Port;
+const Student_EP = process.env.REACT_APP_Student_Endpoint;
+
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
-  const [fetchedStudents, setFetchedStudents] = useState([]); // Store fetched data separately
+  const [fetchedStudents, setFetchedStudents] = useState([]);
   const [searchField, setSearchField] = useState('rollNo');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+
+  // New state to track the expanded/collapsed state for each student
+  const [expandedStudents, setExpandedStudents] = useState([]);
+
   useEffect(() => {
-    // Function to fetch students
     const fetchStudents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/students');
+        const response = await axios.get(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}`);
         setStudents(response.data);
-        setFetchedStudents(response.data); // Store fetched data separately
+        setFetchedStudents(response.data);
+        // Initialize expandedStudents state with false for each student
+        setExpandedStudents(new Array(response.data.length).fill(false));
       } catch (error) {
         console.error('Error fetching students:', error);
       }
@@ -37,6 +51,7 @@ const StudentTable = () => {
     });
     setStudents(updatedStudents);
   };
+
   const editStudent = (student) => {
     setSelectedStudent(student);
   };
@@ -65,47 +80,94 @@ const StudentTable = () => {
 
     // Update the displayed students with filtered results
     setStudents(searchTerm ? filteredStudents : fetchedStudents);
+    setIsSearchActive(!!searchTerm); // Set search flag based on the presence of search term
+  };
+
+  const resetSearch = () => {
+    setSearchTerm(''); // Clear search term
+    setStudents(fetchedStudents); // Reset to original student list
+    setIsSearchActive(false); // Reset search flag
+  };
+
+  // New function to toggle the expanded/collapsed state for each student
+  const toggleAccordion = (index) => {
+    setExpandedStudents((prevExpanded) => {
+      const newExpanded = [...prevExpanded];
+      newExpanded[index] = !newExpanded[index];
+      return newExpanded;
+    });
   };
 
   return (
-    <div>
-      <select onChange={(e) => setSearchField(e.target.value)}>
-        <option value="rollNo">Roll No</option>
-        <option value="name">Name</option>
-        <option value="percentage">Percentage</option>
-      </select>
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder={`Search by ${searchField}`}
-      />
-      <button onClick={handleSearch}>Search</button>
-
-      {/* Render your table using the 'students' state */}
-      <table>
-        <thead>
-          <tr>
-            <th>Roll No</th>
-            <th>Name</th>
-            <th>Percentage</th>
-            <th>Branch</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student) => (
-            <tr key={student.rollNo}>
-              <td>{student.rollNo}</td>
-              <td>{student.name}</td>
-              <td>{student.percentage}</td>
-              <td>{student.branch}</td>
-              <button onClick={() => editStudent(student)}>Edit</button>
-              <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
-
+    <div className='TableContainer'>
+      <div className='searchDropdown'>
+        <select onChange={(e) => setSearchField(e.target.value)}>
+          <option value="rollNo">Roll No</option>
+          <option value="name">Name</option>
+          <option value="percentage">Percentage</option>
+        </select>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder={`Search by ${searchField}`}
+        />
+        <button onClick={handleSearch}>Search</button>
+        {isSearchActive && <button onClick={resetSearch}>Reset</button>}
+      </div>
+      <div className='container1'>
+        <table>
+          <thead>
+            <tr>
+              <th>Roll No</th>
+              <th>Name</th>
+              <th>Percentage</th>
+              <th>Branch</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {students.map((student, index) => (
+              <React.Fragment key={student.rollNo}>
+                <tr>
+                  <td>{student.rollNo}</td>
+                  <td>{student.name}</td>
+                  <td>{student.percentage}</td>
+                  <td>{student.branch}</td>
+                  <td className="actions">
+                    <button className="edit-btn" onClick={() => editStudent(student)}>
+                      <FaEdit />
+                    </button>
+                    <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
+                  </td>
+                </tr>
+                {expandedStudents[index] && (
+                  <tr>
+                    <td colSpan="5">
+                      <div>
+                        <h3>Subjects:</h3>
+                        <ul>
+                          {student.subjects.map((subject) => (
+                            <li key={subject}>{subject}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                <tr>
+                  <td colSpan="5">
+                    <button onClick={() => toggleAccordion(index)}>
+                      {expandedStudents[index] ? 'Collapse' : 'Expand'}
+                    </button>
+                  </td>
+                </tr>
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <AddStudent addStudent={addStudent} />
       {selectedStudent && (
         <EditStudent
           studentData={selectedStudent}
@@ -113,8 +175,6 @@ const StudentTable = () => {
           closeModal={closeModal}
         />
       )}
-      <AddStudent addStudent={addStudent} />
-      {/* <DeleteStudent studentId=studentId deleteStudent={deleteStudent} /> */}
     </div>
   );
 };

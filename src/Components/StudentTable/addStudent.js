@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './addStudent.css';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const AddStudent = ({ addStudent }) => {
   const [newStudent, setNewStudent] = useState({
@@ -13,15 +15,21 @@ const AddStudent = ({ addStudent }) => {
 
   const handleAddStudent = async () => {
     try {
-      // Validate fields (you can add more validation as needed)
       if (!newStudent.rollNo || !newStudent.name || !newStudent.percentage || !newStudent.branch) {
         setError('All fields are required');
         return;
       }
 
-      const response = await axios.post('http://localhost:5000/students', newStudent);
+      const response = await axios.post(`${API_URL}/students`, newStudent);
       addStudent(response.data);
       setShowModal(false);
+      setNewStudent({ // Clear the fields after successful addition
+        rollNo: '',
+        name: '',
+        percentage: '',
+        branch: '',
+      });
+      setError(''); // Reset error message
     } catch (error) {
       setError('Error adding student');
       console.error('Error adding student:', error);
@@ -36,7 +44,7 @@ const AddStudent = ({ addStudent }) => {
 
   return (
     <div>
-      <button onClick={() => setShowModal(true)}>Add Student</button>
+       <button onClick={() => setShowModal(true)}>Add Student</button>
 
       {showModal && (
         <div className="modal">
