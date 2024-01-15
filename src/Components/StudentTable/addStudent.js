@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './addStudent.css';
 const API_URL = process.env.REACT_APP_API_URL;
+const React_Host = process.env.REACT_APP_React_Host;
+const React_Port = process.env.REACT_APP_React_Port;
+const Student_EP = process.env.REACT_APP_Student_Endpoint;
 
 const AddStudent = ({ addStudent }) => {
   const [newStudent, setNewStudent] = useState({
@@ -20,7 +23,7 @@ const AddStudent = ({ addStudent }) => {
         return;
       }
 
-      const response = await axios.post(`${API_URL}/students`, newStudent);
+      const response = await axios.post(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}`, newStudent);
       addStudent(response.data);
       setShowModal(false);
       setNewStudent({ // Clear the fields after successful addition

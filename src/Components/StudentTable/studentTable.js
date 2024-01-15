@@ -5,31 +5,30 @@ import EditStudent from './editStudent';
 import DeleteStudent from './deleteStudent';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import './studentTable.css';
-
 const API_URL = process.env.REACT_APP_API_URL;
 const React_Host = process.env.REACT_APP_React_Host;
 const React_Port = process.env.REACT_APP_React_Port;
 const Student_EP = process.env.REACT_APP_Student_Endpoint;
-
 const StudentTable = () => {
   const [students, setStudents] = useState([]);
-  const [fetchedStudents, setFetchedStudents] = useState([]);
+  const [fetchedStudents, setFetchedStudents] = useState([]); // Store fetched data separately
   const [searchField, setSearchField] = useState('rollNo');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isSearchActive, setIsSearchActive] = useState(false);
-
-  // New state to track the expanded/collapsed state for each student
-  const [expandedStudents, setExpandedStudents] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false); // Flag to track search status
 
   useEffect(() => {
+    // Function to fetch students
     const fetchStudents = async () => {
       try {
+        // console.log(API_URL);
+        // console.log(React_Host);
+        // console.log(React_Port);
+        // console.log(Student_EP);
         const response = await axios.get(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}`);
+       
         setStudents(response.data);
-        setFetchedStudents(response.data);
-        // Initialize expandedStudents state with false for each student
-        setExpandedStudents(new Array(response.data.length).fill(false));
+        setFetchedStudents(response.data); // Store fetched data separately
       } catch (error) {
         console.error('Error fetching students:', error);
       }
@@ -89,15 +88,6 @@ const StudentTable = () => {
     setIsSearchActive(false); // Reset search flag
   };
 
-  // New function to toggle the expanded/collapsed state for each student
-  const toggleAccordion = (index) => {
-    setExpandedStudents((prevExpanded) => {
-      const newExpanded = [...prevExpanded];
-      newExpanded[index] = !newExpanded[index];
-      return newExpanded;
-    });
-  };
-
   return (
     <div className='TableContainer'>
       <div className='searchDropdown'>
@@ -123,46 +113,29 @@ const StudentTable = () => {
               <th>Name</th>
               <th>Percentage</th>
               <th>Branch</th>
+              <th>Year</th>
+              <th>Subject ID</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {students.map((student, index) => (
-              <React.Fragment key={student.rollNo}>
-                <tr>
-                  <td>{student.rollNo}</td>
-                  <td>{student.name}</td>
-                  <td>{student.percentage}</td>
-                  <td>{student.branch}</td>
-                  <td className="actions">
-                    <button className="edit-btn" onClick={() => editStudent(student)}>
-                      <FaEdit />
-                    </button>
-                    <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
-                  </td>
-                </tr>
-                {expandedStudents[index] && (
-                  <tr>
-                    <td colSpan="5">
-                      <div>
-                        <h3>Subjects:</h3>
-                        <ul>
-                          {student.subjects.map((subject) => (
-                            <li key={subject}>{subject}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                <tr>
-                  <td colSpan="5">
-                    <button onClick={() => toggleAccordion(index)}>
-                      {expandedStudents[index] ? 'Collapse' : 'Expand'}
-                    </button>
-                  </td>
-                </tr>
-              </React.Fragment>
+            {students.map((student) => (
+              <tr key={student.rollNo}>
+                <td>{student.rollNo}</td>
+                <td>{student.name}</td>
+                <td>{student.percentage}</td>
+                <td>{student.branch}</td>
+                <td>{student.yearSemIds.length > 0 ? student.yearSemIds[0].year : ''}</td>
+                <td>{student.subjectIds.length > 0 ? student.subjectIds[0].subID : ''}</td>
+                <td>{student.yearSemIds.length > 0 ? student.yearSemIds[0].status : ''}</td>
+                <td className="actions">
+                  <button className="edit-btn" onClick={() => editStudent(student)}>
+                    <FaEdit />
+                  </button>
+                  <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>

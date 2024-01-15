@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
+const React_Host = process.env.REACT_APP_React_Host;
+const React_Port = process.env.REACT_APP_React_Port;
+const Student_EP = process.env.REACT_APP_Student_Endpoint;
 const EditStudent = ({ studentData, updateStudent, closeModal }) => {
   const [editedStudent, setEditedStudent] = useState(studentData);
   const [error, setError] = useState('');
@@ -17,7 +20,7 @@ const EditStudent = ({ studentData, updateStudent, closeModal }) => {
         return;
       }
 
-      await axios.put(`${API_URL}/students/${editedStudent.rollNo}`, editedStudent);
+      await axios.put(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}/${editedStudent.rollNo}`, editedStudent);
       updateStudent(editedStudent);
       setShowModal(false);
       closeModal(); // Close modal in the parent component
