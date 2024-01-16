@@ -47,7 +47,7 @@ const AddStudent = ({ addStudent }) => {
 
   return (
     <div>
-       <button onClick={() => setShowModal(true)}>Add Student</button>
+       <button className="buttonModal" onClick={() => setShowModal(true)}>Add Student</button>
 
       {showModal && (
         <div className="modal">
