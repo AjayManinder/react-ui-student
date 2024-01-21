@@ -1,17 +1,14 @@
+// StudentTable.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../axiosConfig';
 import AddStudent from './addStudent';
 import EditStudent from './editStudent';
 import DeleteStudent from './deleteStudent';
 import { FaEdit } from 'react-icons/fa';
 import './studentTable.css';
 
-const API_URL = process.env.REACT_APP_API_URL;
-const React_Host = process.env.REACT_APP_React_Host;
-const React_Port = process.env.REACT_APP_React_Port;
-const Student_EP = process.env.REACT_APP_Student_Endpoint;
-
 const StudentTable = () => {
+  // useState Hook
   const [students, setStudents] = useState([]);
   const [fetchedStudents, setFetchedStudents] = useState([]);
   const [searchField, setSearchField] = useState('rollNo');
@@ -34,10 +31,11 @@ const StudentTable = () => {
     }));
   };
 
+  // useEffect Hook
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}`);
+        const response = await axiosInstance.get('/students'); // Adjust the route based on your backend
         setFetchedStudents(response.data);
       } catch (error) {
         console.error('Error fetching students:', error);
@@ -47,6 +45,7 @@ const StudentTable = () => {
     fetchStudents();
   }, []);
 
+  // useEffect Hook
   useEffect(() => {
     const indexOfLastStudent = currentPage * studentsPerPage;
     const indexOfFirstStudent = indexOfLastStudent - studentsPerPage;
@@ -95,7 +94,7 @@ const StudentTable = () => {
         }
         return false;
       });
-  
+
       setStudents(filteredStudents);
       setIsSearchActive(true);
     }
@@ -105,7 +104,7 @@ const StudentTable = () => {
     setSearchTerm('');
     setIsSearchActive(false);
     setCurrentPage(1);
-  
+
     // Set students to the first page of fetchedStudents
     setStudents(fetchedStudents.slice(0, studentsPerPage));
   };
@@ -142,15 +141,16 @@ const StudentTable = () => {
             {students.map((student) => (
               <React.Fragment key={student.rollNo}>
                 <tr>
-                  
-                  <td> <button
+                  <td>
+                    <button
                       className="btn-btn-link"
                       type="button"
                       onClick={() => toggleDetails(student.rollNo)}
                     >
                       {openDetails[student.rollNo] ? '^' : '>'}
                     </button>
-                  {student.rollNo}</td>
+                    {student.rollNo}
+                  </td>
                   <td>{student.name}</td>
                   <td>{student.percentage}</td>
                   <td>{student.branch}</td>
@@ -170,7 +170,7 @@ const StudentTable = () => {
                             className={`nav-link ${activeTab === 'yearSemIds' ? 'active' : ''}`}
                             onClick={() => handleTabChange('yearSemIds')}
                           >
-                           Year
+                            Year
                           </button>
                           <button
                             className={`nav-link ${activeTab === 'subjectIds' ? 'active' : ''}`}
@@ -183,41 +183,38 @@ const StudentTable = () => {
                           {activeTab === 'yearSemIds' && (
                             <div className='content-tab'>
                               <div>
-                              <strong>Year:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].year : ''}
+                                <strong>Year:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].year : 'N/A'}
                               </div>
                               <div>
-                              <strong>Semester:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].sem : ''}
+                                <strong>Semester:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].sem : 'N/A'}
                               </div>
                               <div>
-                                <strong>Status:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].status : ''}
+                                <strong>Status:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].status : 'N/A'}
                               </div>
                             </div>
                           )}
                           {activeTab === 'subjectIds' && (
                             <div>
-                              
                               <div>
-                              <strong>Subject ID:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].subID : ''}
-                              </div>
-                            <div>                              
-                              <strong>Subject Name:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].name : ''}
-                            </div>
-                            <div>
-                              <strong>Subject Description:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].description : ''}
+                                <strong>Subject ID:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].subID : 'N/A'}
                               </div>
                               <div>
-                              <strong>Topics:</strong> {
-    student.subjectIds.length > 0
-      ? student.subjectIds
-          .filter(item => item && item.topics) // Remove items without status
-          .map(item => item.topics)
-          .join(', ')
-      : 'No status available'
-  }
+                                <strong>Subject Name:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].name : 'N/A'}
+                              </div>
+                              <div>
+                                <strong>Subject Description:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].description : 'N/A'}
+                              </div>
+                              <div>
+                                <strong>Topics:</strong> {
+                                  student.subjectIds.length > 0
+                                    ? student.subjectIds
+                                      .filter(item => item && item.topics) // Remove items without status
+                                      .map(item => item.topics)
+                                      .join(', ')
+                                    : 'N/A'
+                                }
                               </div>
                             </div>
-                            
-                            
                           )}
                         </div>
                       </div>
@@ -249,7 +246,7 @@ const StudentTable = () => {
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === Math.ceil(fetchedStudents.length / studentsPerPage)}
         >
-          {">"}          
+          {">"}
         </button>
       </div>
     </div>

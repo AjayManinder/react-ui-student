@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL;
 const React_Host = process.env.REACT_APP_React_Host;
 const React_Port = process.env.REACT_APP_React_Port;
 const Student_EP = process.env.REACT_APP_Student_Endpoint;
-const EditStudent = ({ studentData, updateStudent, closeModal }) => {
+const EditStudent = ({ studentData, updateStudent, closeModal }) => {   //Props in the form of studentData, updateStudent, closeModal  cchildren of StudentTable.js
   const [editedStudent, setEditedStudent] = useState(studentData);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(true);
