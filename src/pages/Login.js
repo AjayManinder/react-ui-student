@@ -12,6 +12,7 @@ const Login = ({ setAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  //handling logic
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${API_URL}://${React_Host}:${React_Port}/login`, { email, password });
@@ -21,6 +22,7 @@ const Login = ({ setAuthenticated }) => {
     } catch (error) {
       console.error('Login failed:', error);
     }
+  
   };
 
   return (
