@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './addStudent.css';
-const API_URL = process.env.REACT_APP_API_URL;
-const React_Host = process.env.REACT_APP_React_Host;
-const React_Port = process.env.REACT_APP_React_Port;
-const Student_EP = process.env.REACT_APP_Student_Endpoint;
+import axiosInstance from '../../axiosConfig';
 
 const AddStudent = ({ addStudent }) => {
   const [newStudent, setNewStudent] = useState({
@@ -23,7 +20,7 @@ const AddStudent = ({ addStudent }) => {
         return;
       }
 
-      const response = await axios.post(`${API_URL}://${React_Host}:${React_Port}/${Student_EP}`, newStudent);
+      const response = await axiosInstance.post('/students', newStudent);
       addStudent(response.data);
       setShowModal(false);
       setNewStudent({ // Clear the fields after successful addition
@@ -54,24 +51,28 @@ const AddStudent = ({ addStudent }) => {
           <div className="modal-content">
             <span className="close" onClick={handleModalClose}>&times;</span>
             <h2>Add Student</h2>
+            <label>Roll Number</label>
             <input
               type="text"
               value={newStudent.rollNo}
               onChange={(e) => setNewStudent({ ...newStudent, rollNo: e.target.value })}
               placeholder="Roll No"
             />
+            <label>Name</label>
              <input
               type="text"
               value={newStudent.name}
               onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
               placeholder="Name"
             />
+            <label>Percentage</label>
             <input
               type="text"
               value={newStudent.percentage}
               onChange={(e) => setNewStudent({ ...newStudent, percentage: e.target.value })}
               placeholder="Percentage"
             />
+            <label>Branch</label>
             <input
               type="text"
               value={newStudent.branch}
