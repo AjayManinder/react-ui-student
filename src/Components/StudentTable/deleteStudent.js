@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import axiosInstance from '../../axiosConfig';
 import {  FaTrash } from 'react-icons/fa';
 

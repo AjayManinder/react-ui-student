@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './addStudent.css';
 import axiosInstance from '../../axiosConfig';
 

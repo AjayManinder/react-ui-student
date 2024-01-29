@@ -40,7 +40,7 @@ height: 80px;
 
 @media screen and (max-width: 768px) {
     .Links{
-      display:none;
+      /* display:none; */
     }
   }
 
@@ -51,13 +51,12 @@ height: 80px;
     font-size: calc(5px + 1vmin);
    
     color: rgb(17, 5, 97);
-    /* background-color: rgb(249, 77, 9); */
     padding: 5px;
 }
 
 .Header_Links:hover{
-background-color: rgb(199, 207, 246);
+background-color: rgb(139, 154, 239);
 cursor:pointer;
-border: 1px solid black;
+border: 0px solid black;
 border-radius: 30px;
 }

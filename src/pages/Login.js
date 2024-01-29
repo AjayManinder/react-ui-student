@@ -42,6 +42,7 @@ const Login = ({ setAuthenticated }) => {
   };
 
   return (
+    <div className='mainLoginContainer'>
     <div className="login-container">
       <h2>Login</h2>
       
@@ -58,6 +59,7 @@ const Login = ({ setAuthenticated }) => {
         Login
       </button>
        {disabled && <p style={{color:'red'}}>Login disabled, please try again later</p>}
+    </div>
     </div>
   );
 };
