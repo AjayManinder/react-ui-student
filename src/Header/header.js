@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import "./header.css";
 import { Link, Navigate } from "react-router-dom";
 
 const Header = ({ authenticated, setAuthenticated }) => {
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleToggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     setAuthenticated(false);
