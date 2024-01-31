@@ -43,9 +43,11 @@ const Header = ({ authenticated, setAuthenticated }) => {
             </>
           )}
           {!authenticated && (
+            <>
             <Link className="Header_Links" to="/login">
               LOGIN
             </Link>
+            </>
           )}
         </div>
       </div>

@@ -26,6 +26,7 @@
     padding: 5px 10px;
     cursor: pointer;
     margin-top: 10px;
+    margin-right: 10px;
     border: outset;
     border-radius: 50px;
   }
@@ -41,13 +42,24 @@
     margin-right: 5px;
   }
   
-  .year-semester-display-mode button {
+  .year-semester-display-mode .editButton {
     margin-top: 10px;
     background-color: #0d4674;
     color: #fff;
     padding: 5px 10px;
     cursor: pointer;
     border: outset;
+    margin-right: 10px;
     border-radius: 50px;
   }
   
+  .year-semester-edit-mode .cancelButton {
+    margin-top: 10px;
+    background-color: #ec5a5a;
+    color: #fff;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: outset;
+
+    border-radius: 50px;
+  }
