@@ -12,7 +12,7 @@ const App=()=> {
   const [authenticated, setAuthenticated] = useState(false);
   return (
    <div className='appContainer'>
-      <Header authenticated={authenticated} setAuthenticated={setAuthenticated} />
+      <Header authenticated={authenticated} setAuthenticated={setAuthenticated}  />
       <div className='containerApp'>
       <Routes>
         <Route path="/" element={<Home />} />

@@ -5,20 +5,38 @@ import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
 
-const Header = ({ authenticated, setAuthenticated }) => {
+const Header = ({ authenticated, setAuthenticated, students }) => {
+  console.log('Students prop:', students);
   const [userDetails, setUserDetails] = useState(null);
-
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (token && authenticated) {  // Add a check for authenticated
+        if (token && authenticated) {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken?.user_id;
-  
+    
           if (userId) {
-            const response = await axiosInstance.get(`/users/${userId}`);
-            setUserDetails(response.data);
+            // Fetch user details based on user_id
+            const userResponse = await axiosInstance.get(`/users/${userId}`);
+            const user = userResponse.data;
+    
+            // Fetch student details based on user_id
+            const studentResponse = await axiosInstance.get(`/students?user_id=${userId}`);
+            console.log('Student response:', studentResponse.data);
+            const students = studentResponse.data;
+    
+            if (user && students.length > 0) {
+              // Assuming you want to use the details of the first student for now
+              const student = students[0];
+    
+              // Combine user and student details
+              const userDetails = { ...user, student };
+              setUserDetails(userDetails);
+            } else {
+              console.error('User or student not found');
+              setUserDetails(null);
+            }
           } else {
             console.error('User ID not found in the decoded token. Decoded token:', decodedToken);
             setUserDetails(null);
@@ -31,9 +49,11 @@ const Header = ({ authenticated, setAuthenticated }) => {
         setUserDetails(null);
       }
     };
-  
+    
+    
     fetchUserDetails();
   }, [authenticated]);
+  
   
 
   const handleLogout = () => {
@@ -68,8 +88,9 @@ const Header = ({ authenticated, setAuthenticated }) => {
               <div className="Header-Userdetails">
               
               <div className="Header_Links_User">
-               <strong>{userDetails.email || 'User'} </strong> 
-              </div>
+  <strong>{userDetails.student && userDetails.student.name}</strong>
+</div>
+
               <div className="Header_Links_Button" onClick={handleLogout}>            
               <strong><IoLogOut /></strong>
               </div>
