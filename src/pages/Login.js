@@ -73,7 +73,7 @@ const Login = ({ setAuthenticated }) => {
        
           navigate('/table');
         } else if (roleName === 'teacher') {
-          navigate('/teachers');
+          navigate('/table');
         } else if (roleName === 'admin') {
           navigate('/table');
         }
