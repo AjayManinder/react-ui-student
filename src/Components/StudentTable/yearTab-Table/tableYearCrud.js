@@ -8,9 +8,15 @@ const TableYearCrud = ({ data, onEdit }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState({ ...data });
 
-  const handleEditClick = () => {
+  const handleEditClick = (e) => {
     setEditing(true);
+    e.preventDefault(); 
   };
+  const modelCloseEvent = (e) => {
+    setEditing(false);
+    const { name, value } = e.target;
+    setEditedData((prevData) => ({ ...prevData, [name]: value }));
+    }
 
   const handleSaveClick = async () => {
     try {
@@ -45,6 +51,7 @@ const TableYearCrud = ({ data, onEdit }) => {
           <label htmlFor="status">Status:</label>
           <input type="text" id="status" name="status" value={editedData.status} onChange={handleInputChange} />
           <button onClick={handleSaveClick}>Save</button>
+          <button className='cancelButton' onClick={modelCloseEvent}>Close</button>
         </div>
       ) : (
         <div>
@@ -57,7 +64,7 @@ const TableYearCrud = ({ data, onEdit }) => {
           <div>
             <strong>Status:</strong> {data.status}
           </div>
-          <button onClick={handleEditClick}>Edit</button>
+          <button className= "editButton" onClick={handleEditClick}>Edit</button>
         </div>
       )}
     </div>

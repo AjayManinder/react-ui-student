@@ -7,10 +7,12 @@ import '../yearTab-Table/tableYear.css';
 const TableSubjectCrud = ({ data, onEditSubject }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedSubjectData, setSubjectEditedData] = useState({ ...data });
-
   const handleEditClick = () => {
     setEditing(true);
   };
+const modelCloseEvent = () => {
+  setEditing(false);
+  }
 
   const handleSaveClick = async () => {
     try {
@@ -49,6 +51,7 @@ const TableSubjectCrud = ({ data, onEditSubject }) => {
           <label htmlFor="status">Topics:</label>
           <input type="text" id="topics" name="topics" value={editedSubjectData.topics.join(', ')} onChange={handleInputChange} />
           <button onClick={handleSaveClick}>Save</button>
+          <button className='cancelButton' onClick={modelCloseEvent}>Close</button>
         </div>
       ) : (
         <div>
@@ -64,7 +67,8 @@ const TableSubjectCrud = ({ data, onEditSubject }) => {
           <div>
           <strong>Topics:</strong> {data.topics.join(', ')}
           </div>
-          <button onClick={handleEditClick}>Edit</button>
+          <button className= "editButton" onClick={handleEditClick}>Edit</button>
+
         </div>
       )}
     </div>

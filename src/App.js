@@ -5,12 +5,15 @@ import Home from './pages/home';
 import Table from './pages/Table';
 import Header from './Header/header';
 import Login from './pages/Login';
-// import Footer from './footer/footer';
-function App() {
+import Footer from './Footer/footer';
+import './App.css';
+
+const App=()=> {
   const [authenticated, setAuthenticated] = useState(false);
   return (
-   <>
+   <div className='appContainer'>
       <Header authenticated={authenticated} setAuthenticated={setAuthenticated} />
+      <div className='containerApp'>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -22,8 +25,9 @@ function App() {
           element={<Login setAuthenticated={setAuthenticated} />}
         />
       </Routes>
-    {/* <Footer/> */}
-    </>
+      </div>
+    <Footer/>
+    </div>
    
   );
 }
