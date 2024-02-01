@@ -9,6 +9,8 @@ const Header = ({ authenticated, setAuthenticated, students }) => {
   console.log('Students prop:', students);
   const [userDetails, setUserDetails] = useState(null);
   useEffect(() => {
+ 
+
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -19,22 +21,30 @@ const Header = ({ authenticated, setAuthenticated, students }) => {
           if (userId) {
             // Fetch user details based on user_id
             const userResponse = await axiosInstance.get(`/users/${userId}`);
-            const user = userResponse.data;
-    
-            // Fetch student details based on user_id
+            // Fetch details of the student associated with the logged-in user
             const studentResponse = await axiosInstance.get(`/students?user_id=${userId}`);
-            console.log('Student response:', studentResponse.data);
-            const students = studentResponse.data;
     
-            if (user && students.length > 0) {
-              // Assuming you want to use the details of the first student for now
-              const student = students[0];
+            // Wait for both responses
+            const [user, students] = await Promise.all([userResponse, studentResponse]);
     
+            const userDetail = user.data;
+            const student = students.data.find(student => student.user_id._id === userDetail._id);
+    
+            console.log('User details:', userDetail);
+            console.log('Student details in header:', student);
+    
+            if (userDetail && student) {
               // Combine user and student details
-              const userDetails = { ...user, student };
+              const userDetails = {
+                ...userDetail,
+                student: {
+                  ...student,
+                },
+              };
+              console.log('Combined user details:', userDetails);
               setUserDetails(userDetails);
             } else {
-              console.error('User or student not found');
+              console.error('User or student not found or user_id mismatch');
               setUserDetails(null);
             }
           } else {
@@ -50,9 +60,9 @@ const Header = ({ authenticated, setAuthenticated, students }) => {
       }
     };
     
-    
     fetchUserDetails();
   }, [authenticated]);
+  
   
   
 
@@ -99,9 +109,12 @@ const Header = ({ authenticated, setAuthenticated, students }) => {
             </>
           ) : (
             <>
-              <Link className="Header_Links" to="/login">
-               Login
+             <Link className="Header_Links" to="/table">
+                TABLE
               </Link>
+              <div className="Header_Links_Button" onClick={handleLogout}>            
+              <strong><IoLogOut /></strong>
+              </div>
               {/* Add the TABLE link here if needed */}
             </>
           )}
