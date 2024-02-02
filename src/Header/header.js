@@ -5,60 +5,10 @@ import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
 
-const Header = ({ authenticated, setAuthenticated, userType }) => {
+const Header = ({ authenticated, setAuthenticated }) => {
   const [userDetails, setUserDetails] = useState(null);
+  
   useEffect(() => {
- 
-    // const fetchUserDetails = async () => {
-    //   try {
-    //     const token = localStorage.getItem('token');
-    //     if (token && authenticated) {
-    //       const decodedToken = jwtDecode(token);
-    //       const userId = decodedToken?.user_id;
-    
-    //       if (userId) {
-    //         // Fetch user details based on user_id
-    //         const userResponse = await axiosInstance.get(`/users/${userId}`);
-    //         // Fetch details of the student associated with the logged-in user
-    //         const studentResponse = await axiosInstance.get(`/students?user_id=${userId}`);
-    
-    //         // Wait for both responses
-    //         const [user, students] = await Promise.all([userResponse, studentResponse]);
-    
-    //         const userDetail = user.data;
-    //         const student = students.data.find(student => student.user_id._id === userDetail._id);
-    
-    //         console.log('User details:', userDetail);
-    //         console.log('Student details in header:', student);
-    
-    //         if (userDetail && student) {
-    //           // Combine user and student details
-    //           const userDetails = {
-    //             ...userDetail,
-    //             student: {
-    //               ...student,
-    //             },
-    //           };
-    //           console.log('Combined user details:', userDetails);
-    //           setUserDetails(userDetails);
-    //         } else {
-    //           console.error('User or student not found or user_id mismatch');
-    //           setUserDetails(null);
-    //         }
-    //       } else {
-    //         console.error('User ID not found in the decoded token. Decoded token:', decodedToken);
-    //         setUserDetails(null);
-    //       }
-    //     } else {
-    //       setUserDetails(null);
-    //     }
-    //   } catch (error) {
-    //     console.error('Error fetching user details:', error);
-    //     setUserDetails(null);
-    //   }
-    // };
-
-
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -77,6 +27,8 @@ const Header = ({ authenticated, setAuthenticated, userType }) => {
               detailsResponse = await axiosInstance.get(`/students?user_id=${userId}`);
             } else if (role === 'teacher') {
               detailsResponse = await axiosInstance.get(`/teachers?user_id=${userId}`);
+            } else if (role === 'admin') {
+              detailsResponse = await axiosInstance.get(`/admins?user_id=${userId}`);
             }
     
             if (detailsResponse) {
@@ -159,7 +111,7 @@ const Header = ({ authenticated, setAuthenticated, userType }) => {
               <div className="Header-Userdetails">
               
               <div className="Header_Links_User">
-  <strong>{userDetails.student && userDetails.student.name || userDetails.teacher && userDetails.teacher.teacherName }</strong>
+  <strong>{userDetails.student && userDetails.student.name || userDetails.teacher && userDetails.teacher.teacherName || userDetails.admin && userDetails.admin.adminName }</strong>
   
 </div>
 

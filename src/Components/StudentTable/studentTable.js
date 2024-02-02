@@ -195,7 +195,9 @@ const StudentTable = () => {
               <th>Name</th>
               <th>Percentage</th>
               <th>Branch</th>
+              {/* {userDetails && userDetails.role === 'admin' && ( */}
               <th>Actions</th>
+              {/* )} */}
             </tr>
           </thead>
           <tbody>
@@ -215,12 +217,18 @@ const StudentTable = () => {
                   <td>{student.name}</td>
                   <td>{student.percentage}</td>
                   <td>{student.branch}</td>
-                  <td className="actions">
+                  {/* {userDetails && userDetails.role === 'admin' && ( */}
+                    <>
+                  <td className="actions">                
+                    
                     <button className="edit-btn" onClick={() => editStudent(student)}>
                       <FaEdit />
                     </button>
                     <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
-                  </td>
+                   
+                    </td>
+                    </>
+                  {/* )} */}
                 </tr>
                 {openDetails[student.rollNo] && (
                   <tr>
@@ -291,7 +299,9 @@ const StudentTable = () => {
           </tbody>
         </table>
       </div>
+      {/* {userDetails && userDetails.role === 'admin' === 'admin' && ( */}
       <AddStudent addStudent={addStudent} />
+      {/* )} */}
       {selectedStudent && (
         <EditStudent
           studentData={selectedStudent}
