@@ -1,5 +1,5 @@
 // StudentTable.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../../axiosConfig';
 import AddStudent from './addStudent';
 import EditStudent from './editStudent';
@@ -8,6 +8,7 @@ import { FaEdit } from 'react-icons/fa';
 import './studentTable.css';
 import TableYearCrud from './yearTab-Table/tableYearCrud';
 import TableSubjectCrud from './subjectTab-Table/tableSubject-Crud';
+import { Context } from '../../App';
 
 const StudentTable = () => {
   // useState Hook
@@ -23,7 +24,7 @@ const StudentTable = () => {
   const [editedSubject, setEditedSubject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [studentsPerPage] = useState(5);
-
+  const [userDetails, setUserDetails] = useContext(Context);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -195,7 +196,9 @@ const StudentTable = () => {
               <th>Name</th>
               <th>Percentage</th>
               <th>Branch</th>
+              {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
               <th>Actions</th>
+               )}
             </tr>
           </thead>
           <tbody>
@@ -215,12 +218,18 @@ const StudentTable = () => {
                   <td>{student.name}</td>
                   <td>{student.percentage}</td>
                   <td>{student.branch}</td>
-                  <td className="actions">
+                  {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher'&& (
+                    <>
+                  <td className="actions">                
+                    
                     <button className="edit-btn" onClick={() => editStudent(student)}>
                       <FaEdit />
                     </button>
                     <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
-                  </td>
+                   
+                    </td>
+                    </>
+                   )} 
                 </tr>
                 {openDetails[student.rollNo] && (
                   <tr>
@@ -291,7 +300,9 @@ const StudentTable = () => {
           </tbody>
         </table>
       </div>
+      {userDetails && userDetails.role_id.roleName === 'admin' ||  userDetails.role_id.roleName === 'teacher'  && (
       <AddStudent addStudent={addStudent} />
+      )}
       {selectedStudent && (
         <EditStudent
           studentData={selectedStudent}

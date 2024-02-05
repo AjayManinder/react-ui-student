@@ -1,24 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./header.css";
 import { Link, Navigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
-
+import { Context } from "../App";
 const Header = ({ authenticated, setAuthenticated }) => {
-  const [userDetails, setUserDetails] = useState(null);
-
+  const [userDetails, setUserDetails] = useContext(Context);
+  
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (token && authenticated) {  // Add a check for authenticated
+        if (token && authenticated) {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken?.user_id;
-  
+    
           if (userId) {
-            const response = await axiosInstance.get(`/users/${userId}`);
-            setUserDetails(response.data);
+            // Fetch user details based on user_id
+            const userResponse = await axiosInstance.get(`/users/${userId}`);
+            // Fetch details based on the user's role
+            const role = userResponse.data?.role_id?.roleName;
+    
+            let detailsResponse;
+            if (role === 'student') {
+              detailsResponse = await axiosInstance.get(`/students?user_id=${userId}`);
+            } else if (role === 'teacher') {
+              detailsResponse = await axiosInstance.get(`/teachers?user_id=${userId}`);
+            } else if (role === 'admin') {
+              detailsResponse = await axiosInstance.get(`/admins?user_id=${userId}`);
+            }
+    
+            if (detailsResponse) {
+              // Wait for both responses
+              const [user, details] = await Promise.all([userResponse, detailsResponse]);
+    
+              const userDetail = user.data;
+              const userSpecificDetails = details.data.find(detail => detail.user_id._id === userDetail._id);
+    
+              console.log('User details:', userDetail);
+              console.log(`${role} details in header:`, userSpecificDetails);
+    
+              if (userDetail && userSpecificDetails) {
+                // Combine user and specific details
+                const userDetails = {
+                  ...userDetail,
+                  [role]: {
+                    ...userSpecificDetails,
+                  },
+                };
+                console.log('Combined user details:', userDetails);
+                setUserDetails(userDetails);
+                console.log(`role - name in header ${role} / ${userDetails?.student?.name ?? userDetails?.teacher?.teacherName ?? `Admin - ${userDetails?.admin?.adminName}`  }` );
+              } else {
+                console.error(`User or ${role} not found or user_id mismatch`);
+                setUserDetails(null);
+              }
+            } else {
+              console.error(`Details not found for role: ${role}`);
+              setUserDetails(null);
+            }
           } else {
             console.error('User ID not found in the decoded token. Decoded token:', decodedToken);
             setUserDetails(null);
@@ -31,9 +72,12 @@ const Header = ({ authenticated, setAuthenticated }) => {
         setUserDetails(null);
       }
     };
-  
+
+
     fetchUserDetails();
   }, [authenticated]);
+  
+  
   
 
   const handleLogout = () => {
@@ -65,11 +109,17 @@ const Header = ({ authenticated, setAuthenticated }) => {
               <Link className="Header_Links" to="/table">
                 TABLE
               </Link>
+              {userDetails && userDetails.role_id.roleName === 'admin' && (
+              <Link className="Header_Links" to="/users">
+                Users
+              </Link>
+              )}
               <div className="Header-Userdetails">
               
               <div className="Header_Links_User">
-               <strong>{userDetails.email || 'User'} </strong> 
-              </div>
+              <strong>{userDetails?.student?.name ? `Student / ${userDetails.student.name}` : userDetails?.teacher?.teacherName ? `Teacher / ${userDetails.teacher.teacherName}` : userDetails?.admin?.adminName ? `Admin / ${userDetails.admin.adminName}` : "No Role"}</strong>  
+</div>
+
               <div className="Header_Links_Button" onClick={handleLogout}>            
               <strong><IoLogOut /></strong>
               </div>
@@ -78,9 +128,10 @@ const Header = ({ authenticated, setAuthenticated }) => {
             </>
           ) : (
             <>
-              <Link className="Header_Links" to="/login">
-               Login
+            <Link className="Header_Links" to="/login">
+                Login
               </Link>
+             
               {/* Add the TABLE link here if needed */}
             </>
           )}

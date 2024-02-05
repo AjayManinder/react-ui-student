@@ -1,12 +1,13 @@
 // YearSemester.js
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axiosInstance from '../../../axiosConfig';
 import '../yearTab-Table/tableYear.css';
-
+import { Context } from '../../../App';
 const TableSubjectCrud = ({ data, onEditSubject }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedSubjectData, setSubjectEditedData] = useState({ ...data });
+  const [userDetails, setUserDetails] = useContext(Context);
   const handleEditClick = () => {
     setEditing(true);
   };
@@ -67,7 +68,8 @@ const modelCloseEvent = () => {
           <div>
           <strong>Topics:</strong> {data.topics.join(', ')}
           </div>
-          <button className= "editButton" onClick={handleEditClick}>Edit</button>
+          {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
+          <button className= "editButton" onClick={handleEditClick}>Edit</button> )}
 
         </div>
       )}
