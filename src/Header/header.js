@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./header.css";
 import { Link, Navigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
-
+import { Context } from "../App";
 const Header = ({ authenticated, setAuthenticated }) => {
-  const [userDetails, setUserDetails] = useState(null);
+  const [userDetails, setUserDetails] = useContext(Context);
   
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -51,6 +51,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
                 };
                 console.log('Combined user details:', userDetails);
                 setUserDetails(userDetails);
+                console.log(`role - name in header ${role} / ${userDetails?.student?.name ?? userDetails?.teacher?.teacherName ?? `Admin - ${userDetails?.admin?.adminName}`  }` );
               } else {
                 console.error(`User or ${role} not found or user_id mismatch`);
                 setUserDetails(null);
@@ -108,11 +109,15 @@ const Header = ({ authenticated, setAuthenticated }) => {
               <Link className="Header_Links" to="/table">
                 TABLE
               </Link>
+              {userDetails && userDetails.role_id.roleName === 'admin' && (
+              <Link className="Header_Links" to="/users">
+                Users
+              </Link>
+              )}
               <div className="Header-Userdetails">
               
               <div className="Header_Links_User">
-  <strong>{userDetails.student && userDetails.student.name || userDetails.teacher && userDetails.teacher.teacherName || userDetails.admin && userDetails.admin.adminName }</strong>
-  
+              <strong>{userDetails?.student?.name ? `Student / ${userDetails.student.name}` : userDetails?.teacher?.teacherName ? `Teacher / ${userDetails.teacher.teacherName}` : userDetails?.admin?.adminName ? `Admin / ${userDetails.admin.adminName}` : "No Role"}</strong>  
 </div>
 
               <div className="Header_Links_Button" onClick={handleLogout}>            

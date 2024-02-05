@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../axiosConfig';
-
+import { Context } from '../App';
 
 const MAX_LOGIN_ATTEMPTS = 5;
 
@@ -15,6 +15,7 @@ const Login = ({ setAuthenticated }) => {
   const [disabled, setDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [userDetails, setUserDetails] = useState(null);
+  // const [userResponse] = useContext(Context);
   const backgroundImageArray = [
     'https://t4.ftcdn.net/jpg/02/16/47/33/360_F_216473351_FCLq1pZQOBFrgcyPBphKvBd8Z5wjD1dI.jpg',
     'https://static.vecteezy.com/system/resources/thumbnails/007/164/537/small/fingerprint-identity-sensor-data-protection-system-podium-hologram-blue-light-and-concept-free-vector.jpg',
@@ -34,7 +35,7 @@ const Login = ({ setAuthenticated }) => {
     }
   }, [loginAttempts]);
 
-  const handleLogin = async () => {
+   const handleLogin = async () => {
     try {
       if (disabled) {
         console.error('Login disabled. Too many unsuccessful attempts.');
@@ -61,6 +62,7 @@ const Login = ({ setAuthenticated }) => {
         setAuthenticated(true);
 
         if (roleName === 'student') {
+          console.log("role name" , roleName);
           const studentResponse = await axiosInstance.get(`/students?user_id=${user_id}`);
           const student = studentResponse.data[0];  // Assuming there is only one student per user
           

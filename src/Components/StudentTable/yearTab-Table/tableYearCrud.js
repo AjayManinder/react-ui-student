@@ -1,13 +1,13 @@
 // YearSemester.js
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axiosInstance from '../../../axiosConfig';
 import './tableYear.css';
-
+import { Context } from '../../../App';
 const TableYearCrud = ({ data, onEdit }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedData, setEditedData] = useState({ ...data });
-
+  const [userDetails, setUserDetails] = useContext(Context);
   const handleEditClick = (e) => {
     setEditing(true);
     e.preventDefault(); 
@@ -50,6 +50,7 @@ const TableYearCrud = ({ data, onEdit }) => {
           <input type="text" id="sem" name="sem" value={editedData.sem} onChange={handleInputChange} />
           <label htmlFor="status">Status:</label>
           <input type="text" id="status" name="status" value={editedData.status} onChange={handleInputChange} />
+         
           <button onClick={handleSaveClick}>Save</button>
           <button className='cancelButton' onClick={modelCloseEvent}>Close</button>
         </div>
@@ -64,7 +65,8 @@ const TableYearCrud = ({ data, onEdit }) => {
           <div>
             <strong>Status:</strong> {data.status}
           </div>
-          <button className= "editButton" onClick={handleEditClick}>Edit</button>
+          {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
+          <button className= "editButton" onClick={handleEditClick}>Edit</button> )}
         </div>
       )}
     </div>
