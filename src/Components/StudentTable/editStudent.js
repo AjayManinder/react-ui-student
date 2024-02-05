@@ -45,24 +45,28 @@ const EditStudent = ({ studentData, updateStudent, closeModal }) => {   //Props 
           <div className="modal-content">
             <span className="close" onClick={handleModalClose}>&times;</span>
             <h2>Edit Student</h2>
+            <label>Roll Number:</label>
             <input
               type="text"
               value={editedStudent.rollNo}
               onChange={(e) => setEditedStudent({ ...editedStudent, rollNo: e.target.value })}
               placeholder="Roll No"
             />
+             <label>Name:</label>
             <input
               type="text"
               value={editedStudent.name}
               onChange={(e) => setEditedStudent({ ...editedStudent, name: e.target.value })}
               placeholder="Name"
             />
+             <label>Percentage:</label>
             <input
               type="text"
               value={editedStudent.percentage}
               onChange={(e) => setEditedStudent({ ...editedStudent, percentage: e.target.value })}
               placeholder="Percentage"
             />
+             <label>Branch:</label>
             <input
               type="text"
               value={editedStudent.branch}

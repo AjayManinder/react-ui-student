@@ -3,8 +3,8 @@
     height:100px;
     background-color: rgb(170, 204, 241);
     text-align: center;
-    
-
+    top: 0;
+position: fixed;
     /* background-image: url("https://i.pinimg.com/originals/33/8e/de/338ede5f9f949b9c4cc6c1c0c15c6a00.jpg"); */
 }
 
@@ -38,26 +38,62 @@ height: 80px;
     margin-left: 5px;
 }
 
+.Header-Userdetails{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+}
+
+.Links{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
 @media screen and (max-width: 768px) {
     .Links{
-      display:none;
+      /* display:none; */
     }
   }
+
+  .Header_Links_User{
+    text-decoration: none;
+    font-weight: 600;
+    font-size: calc(5px + 1vmin);   
+    color: rgb(17, 5, 97);
+  
+}
+.Header_Links_Button{
+    font-weight: 600;
+    font-size: calc(10px + 1.5vmin);   
+    color: blue;
+    margin-top: 5px;
+    padding: 3px;
+}
 
 .Header_Links{
     text-decoration: none;
     margin: 10px;
     font-weight: 600;
-    font-size: calc(5px + 1vmin);
-   
+    font-size: calc(5px + 1vmin);   
     color: rgb(17, 5, 97);
-    /* background-color: rgb(249, 77, 9); */
     padding: 5px;
 }
 
 .Header_Links:hover{
-background-color: rgb(199, 207, 246);
+background-color: rgb(139, 154, 239);
 cursor:pointer;
-border: 1px solid black;
+border: 0px solid black;
 border-radius: 30px;
 }
+
+.Header_Links_Button:hover{
+    background-color: white;
+    cursor:pointer;
+    border: 0px solid black;
+    border-radius: 10px;
+    }
