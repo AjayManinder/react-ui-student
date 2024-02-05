@@ -65,7 +65,7 @@ const TableYearCrud = ({ data, onEdit }) => {
           <div>
             <strong>Status:</strong> {data.status}
           </div>
-          {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
+          {userDetails && userDetails.role_id.roleName === 'admin' && (
           <button className= "editButton" onClick={handleEditClick}>Edit</button> )}
         </div>
       )}

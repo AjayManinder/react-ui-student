@@ -196,7 +196,7 @@ const StudentTable = () => {
               <th>Name</th>
               <th>Percentage</th>
               <th>Branch</th>
-              {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
+              {userDetails && userDetails.role_id.roleName === 'admin' && (
               <th>Actions</th>
                )}
             </tr>
@@ -218,7 +218,7 @@ const StudentTable = () => {
                   <td>{student.name}</td>
                   <td>{student.percentage}</td>
                   <td>{student.branch}</td>
-                  {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher'&& (
+                  {userDetails && userDetails.role_id.roleName === 'admin' && (
                     <>
                   <td className="actions">                
                     
@@ -300,7 +300,7 @@ const StudentTable = () => {
           </tbody>
         </table>
       </div>
-      {userDetails && userDetails.role_id.roleName === 'admin' ||  userDetails.role_id.roleName === 'teacher'  && (
+      {userDetails && userDetails.role_id.roleName === 'admin' && (
       <AddStudent addStudent={addStudent} />
       )}
       {selectedStudent && (
