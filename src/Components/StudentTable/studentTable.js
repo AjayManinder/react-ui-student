@@ -1,11 +1,14 @@
 // StudentTable.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../../axiosConfig';
 import AddStudent from './addStudent';
 import EditStudent from './editStudent';
 import DeleteStudent from './deleteStudent';
 import { FaEdit } from 'react-icons/fa';
 import './studentTable.css';
+import TableYearCrud from './yearTab-Table/tableYearCrud';
+import TableSubjectCrud from './subjectTab-Table/tableSubject-Crud';
+import { Context } from '../../App';
 
 const StudentTable = () => {
   // useState Hook
@@ -17,9 +20,11 @@ const StudentTable = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [openDetails, setOpenDetails] = useState({});
   const [activeTab, setActiveTab] = useState('yearSemIds');
+  const [editedYearSemester, setEditedYearSemester] = useState(null);
+  const [editedSubject, setEditedSubject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [studentsPerPage] = useState(5);
-
+  const [userDetails, setUserDetails] = useContext(Context);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
@@ -30,19 +35,18 @@ const StudentTable = () => {
       [rollNo]: !prevOpenDetails[rollNo],
     }));
   };
-
+  const fetchStudents = async () => {
+    try {
+      const response = await axiosInstance.get('/students'); // Adjust the route based on your backend
+      setFetchedStudents(response.data);
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    }
+  };
   // useEffect Hook
+  
   useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axiosInstance.get('/students'); // Adjust the route based on your backend
-        setFetchedStudents(response.data);
-      } catch (error) {
-        console.error('Error fetching students:', error);
-      }
-    };
-
-    fetchStudents();
+      fetchStudents();
   }, []);
 
   // useEffect Hook
@@ -65,6 +69,64 @@ const StudentTable = () => {
     });
     setStudents(updatedStudents);
   };
+  
+  const handleYearSemesterEdit =   (editedData) => {
+    setEditedYearSemester(editedData);
+    updateStudentListYearSemester(editedData);
+  //  await fetchStudents();
+  };
+ 
+
+  const updateStudentListYearSemester = (editedData) => {
+    const updatedStudents = students.map((student) => {
+      if (
+        student.yearSemIds &&
+        student.yearSemIds[0] &&
+        editedData._id === student.yearSemIds[0]._id
+      ) {
+        return {
+          ...student,
+          yearSemIds: [
+            {
+              ...student.yearSemIds[0],
+              ...editedData,
+            },
+          ],
+        };
+      }
+      return student;
+    });
+    setStudents(updatedStudents);
+  };
+  
+  const handleSubjectEdit =  (editedSubjectData) => {
+    setEditedSubject(editedSubjectData);
+    updateStudentListSubject(editedSubjectData);
+  //  await fetchStudents();
+  };
+  
+  const updateStudentListSubject = (editedSubjectData) => {
+    const updatedStudents = students.map((student) => {
+      if (
+        student.subjectIds &&
+        student.subjectIds[0] &&
+        editedSubjectData._id === student.subjectIds[0]._id
+      ) {
+        return {
+          ...student,
+          subjectIds: [
+            {
+              ...student.subjectIds[0],
+              ...editedSubjectData,
+            },
+          ],
+        };
+      }
+      return student;
+    });
+    setStudents(updatedStudents);
+  };
+  
 
   const editStudent = (student) => {
     setSelectedStudent(student);
@@ -134,7 +196,9 @@ const StudentTable = () => {
               <th>Name</th>
               <th>Percentage</th>
               <th>Branch</th>
+              {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher' && (
               <th>Actions</th>
+               )}
             </tr>
           </thead>
           <tbody>
@@ -154,12 +218,18 @@ const StudentTable = () => {
                   <td>{student.name}</td>
                   <td>{student.percentage}</td>
                   <td>{student.branch}</td>
-                  <td className="actions">
+                  {userDetails && userDetails.role_id.roleName === 'admin' || userDetails.role_id.roleName === 'teacher'&& (
+                    <>
+                  <td className="actions">                
+                    
                     <button className="edit-btn" onClick={() => editStudent(student)}>
                       <FaEdit />
                     </button>
                     <DeleteStudent rollNo={student.rollNo} deleteStudent={deleteStudent} />
-                  </td>
+                   
+                    </td>
+                    </>
+                   )} 
                 </tr>
                 {openDetails[student.rollNo] && (
                   <tr>
@@ -182,7 +252,7 @@ const StudentTable = () => {
                         <div>
                           {activeTab === 'yearSemIds' && (
                             <div className='content-tab'>
-                              <div>
+                              {/* <div>
                                 <strong>Year:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].year : 'N/A'}
                               </div>
                               <div>
@@ -190,12 +260,15 @@ const StudentTable = () => {
                               </div>
                               <div>
                                 <strong>Status:</strong> {student.yearSemIds.length > 0 ? student.yearSemIds[0].status : 'N/A'}
-                              </div>
+                              </div> */}
+                             
+                              <TableYearCrud data={student.yearSemIds[0]} onEdit={handleYearSemesterEdit} />
+
                             </div>
                           )}
                           {activeTab === 'subjectIds' && (
                             <div>
-                              <div>
+                              {/* <div>
                                 <strong>Subject ID:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].subID : 'N/A'}
                               </div>
                               <div>
@@ -203,8 +276,9 @@ const StudentTable = () => {
                               </div>
                               <div>
                                 <strong>Subject Description:</strong> {student.subjectIds.length > 0 ? student.subjectIds[0].description : 'N/A'}
-                              </div>
-                              <div>
+                              </div> */}
+                               <TableSubjectCrud data={student.subjectIds[0]} onEditSubject={handleSubjectEdit} />
+                              {/* <div>
                                 <strong>Topics:</strong> {
                                   student.subjectIds.length > 0
                                     ? student.subjectIds
@@ -213,7 +287,7 @@ const StudentTable = () => {
                                       .join(', ')
                                     : 'N/A'
                                 }
-                              </div>
+                              </div> */}
                             </div>
                           )}
                         </div>
@@ -226,7 +300,9 @@ const StudentTable = () => {
           </tbody>
         </table>
       </div>
+      {userDetails && userDetails.role_id.roleName === 'admin' ||  userDetails.role_id.roleName === 'teacher'  && (
       <AddStudent addStudent={addStudent} />
+      )}
       {selectedStudent && (
         <EditStudent
           studentData={selectedStudent}

@@ -1,10 +1,20 @@
 /* login.css */
  
-  .login-container {
+.mainLoginContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  height: 65%;
+}
+
+.login-container {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px;
     width: 300px;
     text-align: center;
     justify-content: center;
@@ -16,6 +26,26 @@
   
   .login-form {
     margin-top: 20px;
+  }
+
+  .LoginHead{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#007bff;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease-in-out;
+    width: 300px;
+    padding: 5px 30px;
+    height: 50px;
+  }
+
+  .LoginHead .h2{
+   color: #fff;
+   padding: 10px;
+   font-size: calc(10px + 1.5vmin);
+  font-weight: bolder;
   }
   
   .input-group {
@@ -42,14 +72,43 @@
     color: #ffffff;
     padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 15px;
   }
   
   .login-btn:hover {
     background-color: #0056b3;
   }
+
+  .link-Fp{
+    margin-top: 10px;
+  }
+
+  .link-forgotpassword{
+    text-decoration: none;
+    margin: 10px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-size: calc(5px + 1vmin);   
+    color: blue;
+    padding: 5px;
+  }
+
+  .link-forgotpassword:hover{
+    
+    color: rgb(237, 117, 117);
+  
+  }
+
+  /* .passwordVisabilityIcon{
+    position: 'absolute';
+    right: '10px';
+    top: '50%';
+    transform: 'translateY(-50%)';
+    cursor: 'pointer';
+  } */
   
   .error-message {
     color: #ff0000;
