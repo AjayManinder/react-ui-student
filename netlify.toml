@@ -1,0 +1,29 @@
+# netlify.toml
+
+# Build settings
+[build]
+  command = "npm run build"
+  publish = "build/"
+
+# Redirects
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[build.environment]
+
+REACT_APP_API_URL="http"
+REACT_APP_React_Host="localhost"
+REACT_APP_React_Port="5000"
+REACT_APP_Student_Endpoint="students"
+
+
+[[plugins]]
+  package = "netlify-plugin-inline-functions"
