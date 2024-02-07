@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/home';
@@ -14,32 +14,32 @@ export const Context = React.createContext();
 const App=()=> {
   const [authenticated, setAuthenticated] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
-
+ 
   return (
     <Context.Provider value={[userDetails, setUserDetails]}>
-   <div className='appContainer'>
-      <Header authenticated={authenticated} setAuthenticated={setAuthenticated}  />
+    <div className='appContainer'>
+      <Header authenticated={authenticated} setAuthenticated={setAuthenticated} />
       <div className='containerApp'>
-      <Routes>
-        <Route path="/" element={authenticated ? <Home />: <Home /> } />
-        <Route
-          path="/table"
-          element={authenticated ? <Table /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/login"
-          element={<Login setAuthenticated={setAuthenticated} />}
-        />
-        
-         <Route
-              path="/users"
-              element={authenticated ? <UsersTable /> : <Navigate to="/login" />}
-            />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/table"
+            element={authenticated &&  <Table />}
+          />
+          <Route
+            path="/login"
+            element={<Login setAuthenticated={setAuthenticated} />}
+          />
+          <Route
+            path="/users"
+            element={authenticated && <UsersTable /> }
+          />
+          {/* Add more routes here as needed */}
+        </Routes>
       </div>
-    <Footer/>
+      <Footer />
     </div>
-    </Context.Provider>
+  </Context.Provider>
    
   );
 }
