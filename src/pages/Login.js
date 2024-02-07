@@ -14,6 +14,7 @@ const Login = ({ setAuthenticated }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [userDetails, setUserDetails] = useState(null);
   const [loading, setLoading] = useState(false);
+  
   // const [userResponse] = useContext(Context);
   const backgroundImageArray = [
     'https://t4.ftcdn.net/jpg/02/16/47/33/360_F_216473351_FCLq1pZQOBFrgcyPBphKvBd8Z5wjD1dI.jpg',
@@ -47,6 +48,8 @@ const Login = ({ setAuthenticated }) => {
       const response = await axiosInstance.post(`/login`, { email, password });
       const { token } = response.data;
       localStorage.setItem('token', token);
+      console.log('Token stored in localStorage:', token);
+      setAuthenticated(true); 
   
       // Fetch user details after successful login
       const userResponse = await axiosInstance.get('/users');

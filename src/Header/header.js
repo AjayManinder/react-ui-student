@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
@@ -8,12 +8,12 @@ import { Context } from "../App";
 const Header = ({ authenticated, setAuthenticated }) => {
   const [userDetails, setUserDetails] = useContext(Context);
   const [loading, setLoading] = useState(true);
-  
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (token && authenticated) {
+        if (token && authenticated ) {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken?.user_id;
     
@@ -79,15 +79,20 @@ const Header = ({ authenticated, setAuthenticated }) => {
     fetchUserDetails();
   }, [authenticated]);
   
-  
-  if (loading) {
-    return <div className="loadingMessage">Loading...</div>;
-  }
+  // Check if the user is already authenticated
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      // If token exists, set authenticated state to true
+      setAuthenticated(true);
+    }
+  }, [setAuthenticated]);
 
+  
   const handleLogout = () => {
     localStorage.removeItem('token');
     setAuthenticated(false);
     setUserDetails(null);
+    navigate('/login');
   };
 
   return (
