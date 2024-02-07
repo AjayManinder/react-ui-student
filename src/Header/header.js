@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./header.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from "../axiosConfig";
 import { IoLogOut } from "react-icons/io5";
 import { Context } from "../App";
 const Header = ({ authenticated, setAuthenticated }) => {
   const [userDetails, setUserDetails] = useContext(Context);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -67,6 +68,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
         } else {
           setUserDetails(null);
         }
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching user details:', error);
         setUserDetails(null);
@@ -78,7 +80,9 @@ const Header = ({ authenticated, setAuthenticated }) => {
   }, [authenticated]);
   
   
-  
+  if (loading) {
+    return <div className="loadingMessage">Loading...</div>;
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('token');

@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axiosInstance from '../axiosConfig';
-import { Context } from '../App';
 
 const MAX_LOGIN_ATTEMPTS = 5;
 
@@ -15,6 +13,7 @@ const Login = ({ setAuthenticated }) => {
   const [disabled, setDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [userDetails, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(false);
   // const [userResponse] = useContext(Context);
   const backgroundImageArray = [
     'https://t4.ftcdn.net/jpg/02/16/47/33/360_F_216473351_FCLq1pZQOBFrgcyPBphKvBd8Z5wjD1dI.jpg',
@@ -32,15 +31,18 @@ const Login = ({ setAuthenticated }) => {
   useEffect(() => {
     if (loginAttempts === 0) {
       setDisabled(true);
+      
     }
   }, [loginAttempts]);
 
    const handleLogin = async () => {
     try {
+      setLoading(true)
       if (disabled) {
         console.error('Login disabled. Too many unsuccessful attempts.');
         return;
       }
+    
   
       const response = await axiosInstance.post(`/login`, { email, password });
       const { token } = response.data;
@@ -52,7 +54,7 @@ const Login = ({ setAuthenticated }) => {
   
       // Check user role and name
       if (user) {
-        const { role_id, user_id, name } = user;
+        const { role_id, user_id} = user;
         console.log('User details:', user);
   
         // Extract roleName from role_id object
@@ -72,7 +74,7 @@ const Login = ({ setAuthenticated }) => {
           }
   
         // Redirect based on the role
-       
+        setLoading(true);
           navigate('/table');
         } else if (roleName === 'teacher') {
           navigate('/table');
@@ -80,20 +82,22 @@ const Login = ({ setAuthenticated }) => {
           navigate('/table');
         }
       }
+     
     } catch (error) {
+      
       console.error('Login failed:', error);
       setLoginAttempts(prevAttempts => prevAttempts - 1);
+      setLoading(false);
       setErrorMessage(`Invalid email or password. \n${loginAttempts - 1} attempts left.`);
     }
   };
-
   const dothis = () => {
     const newIndex = (currentImageIndex + 1) % backgroundImageArray.length;
     setCurrentImageIndex(newIndex);
   };
 
   return (
-    <div className='mainLoginContainer'>
+    <div className='mainLoginContainer'>       
       <div className='LoginHead' style={{ backgroundImage: `url(${backgroundImageArray[currentImageIndex]})` }} onDoubleClick={dothis}>
         <div className='h2'>Log into Portal</div>
       </div>
@@ -134,7 +138,9 @@ const Login = ({ setAuthenticated }) => {
         </div>
         {disabled && <p style={{ color: 'red' }}>Login disabled, please try again later</p>}
       </div>
+      {loading && <div className="loadingMessage">Loading...</div>}
     </div>
+    
   );
 };
 
