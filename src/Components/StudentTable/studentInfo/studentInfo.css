@@ -1,0 +1,67 @@
+.student-info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .info-button {
+    width: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    background-color: #2c3e50;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .info-button:hover {
+    background-color: #34495e;
+  }
+  
+  .info-button.active {
+    background-color: #3498db;
+  }
+  
+  .info-button.active:hover {
+    background-color: #5aa4e8;
+  }
+  
+  .info-container {
+    flex: 1;
+  }
+  
+  .subject-container,
+  .year-sem-container {
+    /* display: none; */
+  }
+  
+  .subject-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .subject-container ul li {
+    margin-bottom: 5px;
+  }
+  
+  .year-sem-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .year-sem-container ul li {
+    margin-bottom: 5px;
+  }
+  

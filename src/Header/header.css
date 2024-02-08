@@ -97,3 +97,56 @@ border-radius: 30px;
     border: 0px solid black;
     border-radius: 10px;
     }
+
+    /* Add this CSS for dropdown menu */
+    .dropdown {
+      display: none;
+    }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    z-index: 1;
+    margin-left: -80px; /* Adjust this value to center the dropdown relative to the menu */
+    left: 10%; /* Align the left edge of the dropdown with the center of the menu */
+    top: 100%; /* Position the top of the dropdown below the menu */
+  }
+  
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+ 
+  .dropbtn {
+    background-color: #8ca9ed;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 720px) {
+    .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+  
+    .desktop-links {
+      display: none;
+    }
+  }
+  
+    
+  .dropdown-content.show {
+    display: block;
+  }
+  
+  
+  
