@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import axiosInstance from '../../../axiosConfig';
 import './creatingUserForm.css'; // Import external CSS file
 
 const CreateUserForm = () => {
@@ -29,9 +29,9 @@ const CreateUserForm = () => {
     const fetchData = async () => {
       try {
         const [rolesRes, subjectsRes, yearSemestersRes] = await Promise.all([
-          axios.get('http://localhost:5000/roles'),
-          axios.get('http://localhost:5000/subjects'),
-          axios.get('http://localhost:5000/yearsem')
+          axiosInstance.get('/roles'),
+          axiosInstance.get('/subjects'),
+          axiosInstance.get('/yearsem')
         ]);
         setFormData(prevState => ({
           ...prevState,
@@ -93,14 +93,14 @@ const CreateUserForm = () => {
     }
 
     try {
-      const newUserResponse = await axios.post('http://localhost:5000/register', {
+      const newUserResponse = await axiosInstance.post('/register', {
         user_id: formData.user_id,
         email: formData.email,
         password: formData.password,
         role_id: formData.role_id,
       });
 
-      const newStudentResponse = await axios.post('http://localhost:5000/students', {
+      const newStudentResponse = await axiosInstance.post('/students', {
         rollNo: formData.rollNo,
         name: formData.name,
         percentage: formData.percentage,
