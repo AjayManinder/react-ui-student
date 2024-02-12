@@ -5,6 +5,8 @@
     text-align: center;
     top: 0;
 position: fixed;
+z-index: 1000; /* Ensure the header stays above other content */
+/* overflow-y: auto;  */
     /* background-image: url("https://i.pinimg.com/originals/33/8e/de/338ede5f9f949b9c4cc6c1c0c15c6a00.jpg"); */
 }
 

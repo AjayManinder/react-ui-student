@@ -1,8 +1,8 @@
 .student-info-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
+    margin-left: 160px;
+    /* width: 80%; */
   }
   
   .button-container {
@@ -10,18 +10,45 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-right: 20px;
+    position: relative;
+    left:0px;
+    bottom:0px;
+    /* overflow-y: scroll; */
+    flex-grow: 1;
+    overflow-x: hidden;
+  }
+
+  .button-container-desktop {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* max-height:calc(100vh - 100px); */
+    background-color: #2c3e50;  
+    height: calc(100vh - 100px); 
+    align-items: center;
+    overflow-y: auto;
+    flex-grow: 1;
+    overflow-x: hidden;
+   
+  
+  }
+
+  .profile-image{
+    width: 140px;
+    height: 150px;
+    margin-top: 10px ;
+    margin-bottom: 10px;
+    border-radius: 10%;
+   
   }
   
   .info-button {
     width: 150px;
     padding: 10px;
-    margin-bottom: 10px;
-    font-size: 16px;
+    font-size: calc(5px + 1vmin);
     background-color: #2c3e50;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
+    color: #f9f1f1;
+    border-top: 1px solid white;  
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
@@ -39,17 +66,15 @@
   }
   
   .info-container {
-    flex: 1;
-  }
-  
-  .subject-container,
-  .year-sem-container {
-    /* display: none; */
-  }
-  
+    display: flex;
+    padding: 10px;
+    /* width: 90%; */
+    flex-direction: row;
+    flex-wrap: wrap;
+   }
+   
   .subject-container ul {
     list-style-type: none;
-    padding: 0;
   }
   
   .subject-container ul li {
@@ -58,10 +83,139 @@
   
   .year-sem-container ul {
     list-style-type: none;
-    padding: 0;
-  }
+   }
   
   .year-sem-container ul li {
     margin-bottom: 5px;
   }
+ 
+
+
+  .desktop-links-button{
+    border: none;
+    display: inline;
+    position: fixed;
+    left:0;
+  }
+    /* Add this CSS for dropdown menu */
+  .dropdown-mobile-view {
+      display: none;
+    }
+
+    .dropdown-contents-mobile-view {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      z-index: 1;
+      left: 0; /* Position the dropdown at the left edge of the button */
+      bottom: 100;
+      /* border: 1px solid #3498db;  */
+    }
+    
+    .dropdown-contents-mobile-view button.info-button {
+      color: black;
+      padding: 12px 16px;
+      display: block;
+    }
+    
+    .dropbtn-mobile-view {
+      /* color: rgb(235, 217, 217); */
+      padding: 16px;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
+    }
   
+  @media (max-width: 820px) {
+    .dropdown-mobile-view {
+      display: inline-block;
+      position: fixed;
+    }
+  
+    .desktop-links-button {
+      display: none;
+    }
+
+    .info-container{
+      margin-top: 30px;
+      flex-direction: column;
+    }
+
+    .student-main-container{
+    flex-direction: column;
+    /* margin-left: 0; */
+  }
+  .student-information-main-container{
+    min-width: 250px;
+   
+  } 
+  
+  }
+  
+  
+    
+ 
+  
+  @media screen and  (max-width: 820px){
+    .student-info-container{
+     flex-direction: column;
+     margin-left: 0;
+    }
+    .button-container{
+      align-items:start;
+    }
+    
+   
+    
+  }
+
+  .dropdown-contents-mobile-view.show {
+    display: block;
+    overflow-y: auto;
+  }
+  
+  
+  .student-main-container{
+    display: flex;   
+  }
+  
+
+  
+ 
+  .student-information-main-container{
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f9f1f1;
+  margin-top: 20px;
+  height: 100%;
+ /* align-items: center; */
+ /* justify-content: center; */
+  /* width: 30%; */
+  padding: 30px;
+  /* min-width: 300px; */
+  }
+
+  .Additional-info-Container{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #f9f1f1;
+    margin-top: 20px;
+    height: 100%;
+    padding: 30px;
+    text-align: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+    /* width: 80%; */
+    /* min-width: 400px; */
+  }
+
+  .student-details-text-info{
+   color: #34495e;
+   font-size: calc(8px + 1.1vmin);
+   font-weight: 500;
+   display: flex;
+    margin-bottom: 1px;
+   justify-content: space-between;
+  }

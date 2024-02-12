@@ -13,14 +13,14 @@ const Footer = () => {
         </div>
         <div className="right-section">
           <div className="right-section-div-head"><strong>Contact</strong></div>
-          <div><strong>Email: </strong>studentportal@gmail.com</div>
+          <div><strong>Email: </strong>collegeportal@gmail.com</div>
           <div><strong>Phone:</strong>999-888-7766</div>
           {/* <p>Student Portal</p> */}
         </div>
         </div>
       <div className="main-container">
        
-      <div>© Student Portal. All rights reserved.</div>
+      <div>© College Portal. All rights reserved.</div>
       </div>
 
      

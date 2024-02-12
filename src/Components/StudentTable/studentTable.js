@@ -1,7 +1,7 @@
 // StudentTable.js
 import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../../axiosConfig';
-import AddStudent from './addStudent';
+// import AddStudent from './addStudent';
 import EditStudent from './editStudent';
 import DeleteStudent from './deleteStudent';
 import { FaEdit } from 'react-icons/fa';
@@ -300,9 +300,9 @@ const StudentTable = () => {
           </tbody>
         </table>
       </div>
-      {userDetails && userDetails.role_id.roleName === 'admin' && (
+     {/*{userDetails && userDetails.role_id.roleName === 'admin' && (
       <AddStudent addStudent={addStudent} />
-      )}
+      )} */}
       {selectedStudent && (
         <EditStudent
           studentData={selectedStudent}

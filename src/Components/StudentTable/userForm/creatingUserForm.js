@@ -21,7 +21,7 @@ const CreateUserForm = () => {
     errors: {
       user_id: '',
       email: '',
-      rollNo: ''
+     
     }
   });
 
@@ -62,9 +62,9 @@ const CreateUserForm = () => {
       if (name === 'email' && formData.roles.some(role => role.email === value)) {
         errors[name] = 'Email already exists.';
       }
-      if (name === 'rollNo' && formData.students.some(student => student.rollNo === value)) {
-        errors[name] = 'Roll Number already exists.';
-      }
+      // if (name === 'rollNo' && formData.students.some(student => student.rollNo === value)) {
+      //   errors[name] = 'Roll Number already exists.';
+      // }
     }
   
     if (type === 'select-multiple') {
@@ -128,7 +128,7 @@ const CreateUserForm = () => {
         errors: {
           user_id: '',
           email: '',
-          rollNo: ''
+          // rollNo: ''
         }
       });
       alert('User and student created successfully.');
