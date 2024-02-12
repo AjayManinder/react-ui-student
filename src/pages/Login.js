@@ -78,7 +78,7 @@ const Login = ({ setAuthenticated }) => {
   
         // Redirect based on the role
         setLoading(true);
-          navigate('/table');
+          navigate('/studentInfo');
         } else if (roleName === 'teacher') {
           navigate('/table');
         } else if (roleName === 'admin') {

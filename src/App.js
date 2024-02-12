@@ -7,6 +7,7 @@ import Header from './Header/header';
 import Login from './pages/Login';
 import Footer from './Footer/footer';
 import UsersTable from './Components/StudentTable/userTable/usersTable';
+import StudentInfo from './Components/StudentTable/studentInfo/studentInfo';
 import './App.css';
 
 export const Context = React.createContext();
@@ -33,6 +34,10 @@ const App=()=> {
           <Route
             path="/users"
             element={authenticated && <UsersTable /> }
+          />
+          <Route
+            path="/studentInfo"
+            element={authenticated && <StudentInfo /> }
           />
           {/* Add more routes here as needed */}
         </Routes>

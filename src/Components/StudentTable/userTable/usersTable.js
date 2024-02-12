@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "./usersTable.css";
 import axiosInstance from "../../../axiosConfig";
+import CreateUserForm from "../userForm/creatingUserForm";
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
@@ -33,6 +34,7 @@ const UsersTable = () => {
 
   return (
     <div className="usersTable">
+      <CreateUserForm />
       <h1 className="tableTitle">Users</h1>
       <div className="tableContainer">
         <table className="userTable">
