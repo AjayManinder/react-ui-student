@@ -4,6 +4,10 @@ import '@testing-library/jest-dom';
 import axios from 'axios'; // Mocking axios for testing
 import StudentTable from './StudentTable';
 
+
+// https://jestjs.io/docs/testing-frameworks
+// https://testing-library.com/docs/react-testing-library/example-intro/
+
 // Mocking axios.get for testing purposes
 jest.mock('axios');
 
