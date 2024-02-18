@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import axiosInstance from '../../../axiosConfig';
 import './creatingUserForm.css'; // Import external CSS file
 
@@ -15,6 +14,8 @@ const CreateUserForm = () => {
     branch: '',
     selectedSubjects: [],
     selectedYearSem: '',
+    admin_id: '',
+    adminName: '',
     roles: [],
     subjects: [],
     yearSemesters: [],
@@ -25,24 +26,26 @@ const CreateUserForm = () => {
     }
   });
 
+  const fetchData = async () => {
+    try {
+      const [rolesRes, subjectsRes, yearSemestersRes] = await Promise.all([
+        axiosInstance.get('/roles'),
+        axiosInstance.get('/subjects'),
+        axiosInstance.get('/yearsem')
+      ]);
+      setFormData(prevState => ({
+        ...prevState,
+        roles: rolesRes.data,
+        subjects: subjectsRes.data,
+        yearSemesters: yearSemestersRes.data,
+      }));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [rolesRes, subjectsRes, yearSemestersRes] = await Promise.all([
-          axiosInstance.get('/roles'),
-          axiosInstance.get('/subjects'),
-          axiosInstance.get('/yearsem')
-        ]);
-        setFormData(prevState => ({
-          ...prevState,
-          roles: rolesRes.data,
-          subjects: subjectsRes.data,
-          yearSemesters: yearSemestersRes.data,
-        }));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    
     fetchData();
   }, []);
   const handleChange = (e) => {
@@ -83,7 +86,6 @@ const CreateUserForm = () => {
     }
   };
   
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const hasErrors = Object.values(formData.errors).some(error => error);
@@ -91,26 +93,42 @@ const CreateUserForm = () => {
       alert('Please fix all errors before submitting.');
       return;
     }
-
+    let newUserResponse;
     try {
-      const newUserResponse = await axiosInstance.post('/register', {
+      newUserResponse = await axiosInstance.post('/register', {
         user_id: formData.user_id,
         email: formData.email,
         password: formData.password,
         role_id: formData.role_id,
       });
-
-      const newStudentResponse = await axiosInstance.post('/students', {
-        rollNo: formData.rollNo,
-        name: formData.name,
-        percentage: formData.percentage,
-        branch: formData.branch,
-        subjectIds: formData.selectedSubjects,
-        yearSemIds: [formData.selectedYearSem],
-        userId: newUserResponse.data.userId,
-      });
-
-      console.log('New student created:', newStudentResponse.data);
+  
+      let responseData;
+      if (formData.role_id === '65b1e345fef8a8c6c613ad76') {
+        responseData = await axiosInstance.post('/students', {
+          rollNo: formData.rollNo,
+          name: formData.name,
+          percentage: formData.percentage,
+          branch: formData.branch,
+          subjectIds: formData.selectedSubjects,
+          yearSemIds: [formData.selectedYearSem],
+          userId: newUserResponse.data.userId,
+        });
+      } else if (formData.role_id === '65b1e320fef8a8c6c613ad74') {
+        responseData = await axiosInstance.post('/teachers', {
+          teacherID: formData.teacherID,
+          teacherName: formData.teacherName,
+          subjectIds: formData.selectedSubjects,
+          user_id: newUserResponse.data.userId,
+        });
+      } else if (formData.role_id === '65b1e300fef8a8c6c613ad72') {
+        responseData = await axiosInstance.post('/admins', {
+          admin_id: formData.admin_id,
+          adminName: formData.adminName,
+          user_id: newUserResponse.data.userId,
+        });
+      }
+  
+      console.log('New data created:', responseData.data);
       setFormData({
         user_id: '',
         email: '',
@@ -120,6 +138,8 @@ const CreateUserForm = () => {
         name: '',
         percentage: '',
         branch: '',
+        teacherID: '',
+        teacherName: '',
         selectedSubjects: [],
         selectedYearSem: '',
         roles: formData.roles,
@@ -128,16 +148,19 @@ const CreateUserForm = () => {
         errors: {
           user_id: '',
           email: '',
-          // rollNo: ''
         }
       });
-      alert('User and student created successfully.');
+      alert('User and data created successfully.');
     } catch (error) {
-      console.error('Error creating user or student:', error);
-      alert('An error occurred while creating user or student.');
+      console.error('Error creating user or data:', error);
+      // If there was an error creating the teacher, delete the user record
+      if (error.response && error.response.status === 400 && error.response.data.message === "Invalid teacher details") {
+        console.log('Deleting user record...');
+        await axiosInstance.delete(`/users/${newUserResponse.data.userId}`);
+      }
+      alert('An error occurred while creating user or data.');
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="create-user-form">
       <label>User ID :
@@ -199,6 +222,42 @@ const CreateUserForm = () => {
           </label>
         </>
       )}
+   {formData.role_id === '65b1e320fef8a8c6c613ad74' && (
+  <>
+    <label>Teacher ID:
+      <input type="string" name="teacherID" value={formData.teacherID} onChange={handleChange} placeholder="Teacher ID" />
+    </label>
+    <label>Teacher Name:
+      <input type="string" name="teacherName" value={formData.teacherName} onChange={handleChange} placeholder="Teacher Name" />
+    </label>
+    <select multiple name="selectedSubjects" value={formData.selectedSubjects} onChange={handleChange}>
+      <option value="">Select Subjects</option>
+      {formData.subjects.map(subject => (
+        <option key={subject._id} value={subject._id}>{subject.name}</option>
+      ))}
+    </select>
+    {formData.selectedSubjects.length > 0 && (
+      <div>
+        <p>Selected Subjects:</p>
+        <ul>
+          {formData.selectedSubjects.map(subjectId => (
+            <li key={subjectId}>{formData.subjects.find(subject => subject._id === subjectId)?.name}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </>
+)}
+  {formData.role_id === '65b1e300fef8a8c6c613ad72' && (
+  <>
+    <label>Admin ID:
+      <input type="number" name="admin_id" value={formData.admin_id} onChange={handleChange} placeholder="Admin ID" />
+    </label>
+    <label>Admin Name:
+      <input type="string" name="adminName" value={formData.adminName} onChange={handleChange} placeholder="admin Name" />
+    </label>
+  </>
+)}
 
       <button type="submit">Submit</button>
     </form>
