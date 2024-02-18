@@ -104,11 +104,34 @@ const Header = ({ authenticated, setAuthenticated }) => {
 
   // Check if the user is already authenticated
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // If token exists, set authenticated state to true
-      setAuthenticated(true);
+    const token = localStorage.getItem("token");
+    console.log("Token in localStorage:", token);
+    const loginTimestamp = localStorage.getItem("loginTimestamp");
+    console.log("Login timestamp in localStorage:", loginTimestamp);
+  
+    if (token && loginTimestamp) {
+      const currentTime = Date.now();
+      const sessionDuration = 120 * 60 * 1000; // 10 minutes in milliseconds
+  
+      if (currentTime - parseInt(loginTimestamp) > sessionDuration) {
+        // Session has expired, clear localStorage and set authenticated to false
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginTimestamp");
+        setAuthenticated(false);
+        navigate("/login");
+        return( console.log("Session expired. Please login again."))
+       
+        ;
+      } else {
+        // Session is still valid, set authenticated to true
+        setAuthenticated(true);
+      }
+    } else {
+      // No token found, set authenticated to false
+      setAuthenticated(false);
     }
-  }, [setAuthenticated]);
+  }, [setAuthenticated, navigate]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");

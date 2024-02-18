@@ -49,6 +49,8 @@ const Login = ({ setAuthenticated }) => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       console.log('Token stored in localStorage:', token);
+     const setLocalstorage= localStorage.setItem('loginTimestamp', Date.now());
+     console.log('loginTimestamp stored in localStorage:', setLocalstorage);
       setAuthenticated(true); 
   
       // Fetch user details after successful login
