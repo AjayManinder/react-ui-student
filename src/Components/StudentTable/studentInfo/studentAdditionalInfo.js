@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './studentInfo.css';
-function StudentAdditionalInfo() {
+
+
+function StudentAdditionalInfo({studentDetails}) {
   const [selectedTab, setSelectedTab] = useState('Primary');
 
   return (
@@ -16,51 +18,51 @@ function StudentAdditionalInfo() {
           <div>
             <div className="student-details-text-info">
               <span>Degree:</span>
-              <span>Master of Science</span>
+              <span>{studentDetails.curriculumPrimary?.degree}</span>
             </div>
             <div className="student-details-text-info">
               <span>Study Path:</span>
-              <span>Not Provided</span>
+              <span>{studentDetails.curriculumPrimary?.studyPath}</span>
             </div>
             <div className="student-details-text-info">
               <span>Level:</span>
-              <span>Graduate</span>
+              <span>{studentDetails.curriculumPrimary?.level}</span>
             </div>
             <div className="student-details-text-info">
               <span>Program:</span>
-              <span>MS Computer Science</span>
+              <span>{studentDetails.curriculumPrimary?.program}</span>
             </div>
             <div className="student-details-text-info">
               <span>College:</span>
-              <span>Health, Science and Technology</span>
+              <span>{studentDetails.curriculumPrimary?.college}</span>
             </div>
             <div className="student-details-text-info">
               <span>Major:</span>
-              <span>Computer Science</span>
+              <span>{studentDetails.curriculumPrimary?.major}</span>
             </div>
             <div className="student-details-text-info">
               <span>Department:</span>
-              <span>Computer Science</span>
+              <span>{studentDetails.curriculumPrimary?.department}</span>
             </div>
             <div className="student-details-text-info">
               <span>Concentration:</span>
-              <span>Not Provided</span>
+              <span>{studentDetails.curriculumPrimary?.concentration}</span>
             </div>
             <div className="student-details-text-info">
               <span>Minor:</span>
-              <span>Not Provided</span>
+              <span>{studentDetails.curriculumPrimary?.minor}</span>
             </div>
             <div className="student-details-text-info">
               <span>Admit Type:</span>
-              <span>Standard</span>
+              <span>{studentDetails.curriculumPrimary?.admitType}</span>
             </div>
             <div className="student-details-text-info">
               <span>Admit Term:</span>
-              <span>Fall 2021</span>
+              <span>{studentDetails.curriculumPrimary?.admitTerm}</span>
             </div>
             <div className="student-details-text-info">
               <span>Catalog Term:</span>
-              <span>Fall 2021</span>
+              <span>{studentDetails.curriculumPrimary?.catalogTerm}</span>
             </div>
           </div>
         )}

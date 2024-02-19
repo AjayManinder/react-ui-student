@@ -111,7 +111,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
   
     if (token && loginTimestamp) {
       const currentTime = Date.now();
-      const sessionDuration = 120 * 60 * 1000; // 10 minutes in milliseconds
+      const sessionDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
   
       if (currentTime - parseInt(loginTimestamp) > sessionDuration) {
         // Session has expired, clear localStorage and set authenticated to false

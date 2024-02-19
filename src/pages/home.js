@@ -13,16 +13,16 @@ const Home = () => {
      
       <div className='homeView-container'>
    
-      <div class="containerHome-1">
-  <div class="item1">
+      <div className="containerHome-1">
+  <div className="item1">
     <img src='https://t3.ftcdn.net/jpg/04/18/52/88/360_F_418528804_xgyFvVsMSHeWk1UgDtR9aoccqSC7BrHy.jpg' alt='image1' className='container1-image'/>
     <div className='container1-text'>VISION</div>
   </div>
-  <div class="item1">
+  <div className="item1">
   <img src='https://t3.ftcdn.net/jpg/03/04/26/00/360_F_304260079_AwyXBUBSjjReWi8QBd7twbQyzpDsurUv.jpg' alt='image1' className='container1-image'/>
     <div className='container1-text'>MISSION</div>
   </div>
-  <div class="item1">
+  <div className="item1">
   <img src='https://c8.alamy.com/compfr/e929h6/tableau-strategie-e929h6.jpg' alt='image1' className='container1-image'/>
     <div className='container1-text'>STRATEGY</div>
   </div>
@@ -37,22 +37,22 @@ const Home = () => {
 
 </div>
 
-<div class="container2">
-  <div class="item2">
+<div className="container2">
+  <div className="item2">
   <div className='container2-text'>Graduate <br/> Opportunities</div>
   </div>
-  <div class="item2">
+  <div className="item2">
     <div className='container2-text'>Under-Grad  <br/> Opportunities </div></div>
-  <div class="item2">
+  <div className="item2">
   <div className='container2-text'>Addmissions</div>
   </div>
-  <div class="item2">
+  <div className="item2">
   <div className='container2-text'>Student <br/> Services</div>
   </div>
-  <div class="item2">
+  <div className="item2">
   <div className='container2-text'>Master's Program</div>
   </div>
-  <div class="item2"><div className='container2-text'>Housing</div></div>
+  <div className="item2"><div className='container2-text'>Housing</div></div>
  
 </div>
 <div className='afterHomeView-containerText'>
@@ -66,9 +66,9 @@ We are committed to providing a safe and welcoming environment for all internati
 </div>
 
 
-<div class="container3">
-  <div class="item3 left-item3"><img src='https://www.volstate.edu/sites/default/files/styles/mt_fli_image/public/2017-09/VS-Students-Campus_8-31-177.jpg?itok=jDVEKlzi' alt='image1' className='container3-image'/></div>
-  <div class="item3 right-item3">
+<div className="container3">
+  <div className="item3 left-item3"><img src='https://www.volstate.edu/sites/default/files/styles/mt_fli_image/public/2017-09/VS-Students-Campus_8-31-177.jpg?itok=jDVEKlzi' alt='image1' className='container3-image'/></div>
+  <div className="item3 right-item3">
     <h2>Campus Life</h2>
     <h6>Our campus is a place for students to live, learn and grow. We offer a variety of programs and services to help students succeed in their education and beyond.<br/>
     <br/> Campus life here is active and creative, fun and fantastic. You’ll literally have hundreds of opportunities to get involved—from student organizations to academic teams, to sororities and fraternities, athletics to intramural and club sports.
@@ -76,19 +76,19 @@ We are committed to providing a safe and welcoming environment for all internati
   </div>
 </div>
 
-<div class="container3">
-  <div class="item3 right-item3">
+<div className="container3">
+  <div className="item3 right-item3">
     <h2>Our Mission, Vision, and Strategic Plan</h2>
     <h6>Mission & Vision - disseminates knowledge that transforms students into leaders who possess the aptitudes, skills and confidence to succeed.
 <br/><br/>
 Strategic Plan - Taking a forward-looking approach in a new era in higher education, We developed a new strategic plan in 2019.</h6>
     </div>
-  <div class="item3 left-item3"><img src='https://www.hccs.edu/media/houston-community-college/district/images/GettyImages-1321462048.jpg' alt='image1' className='container3-image'/></div>
+  <div className="item3 left-item3"><img src='https://www.hccs.edu/media/houston-community-college/district/images/GettyImages-1321462048.jpg' alt='image1' className='container3-image'/></div>
 </div>
 
-<div class="container3">
-  <div class="item3 left-item3"><img src='https://www.usnews.com/cmsmedia/e3/2f/9c2bcdf94ae8b3083e555346e2e0/20221011-fallcampusscenics-jb-0303.JPG' alt='image1' className='container3-image'/></div>
-  <div class="item3 right-item3">
+<div className="container3">
+  <div className="item3 left-item3"><img src='https://www.usnews.com/cmsmedia/e3/2f/9c2bcdf94ae8b3083e555346e2e0/20221011-fallcampusscenics-jb-0303.JPG' alt='image1' className='container3-image'/></div>
+  <div className="item3 right-item3">
     <h2>Spacious and Beautiful Campus Locations</h2>
     <h6>The University has two campus locations, a site office at Whiteman Air Force Base and an online presence<br/><br/>
       Our Midwestern charm and hospitality is something in which we’re proud. This is in addition to our nationally recognized and beautiful campus grounds.</h6>

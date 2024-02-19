@@ -37,7 +37,7 @@ const App=()=> {
           />
           <Route
             path="/studentInfo"
-            element={authenticated && <StudentInfo /> }
+            element={authenticated ? <StudentInfo /> :<Login />}
           />
           {/* Add more routes here as needed */}
         </Routes>
