@@ -7,26 +7,38 @@ import { IoLogOut } from "react-icons/io5";
 import { FiAlignRight } from "react-icons/fi";
 import { Context } from "../App";
 
+// authenticated, setAuthenticated are props passed from App.js, which are used to set the authenticated state
 const Header = ({ authenticated, setAuthenticated }) => {
+  // Using the Context hook to access shared state
   const [userDetails, setUserDetails] = useContext(Context);
+  // State variables to track loading state and dropdown menu state
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Effect hook to fetch user details when authentication status changes
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
+        // Retrieving JWT token from localStorage
         const token = localStorage.getItem("token");
+        // Checkin if there's a token and the user is authenticated:
         if (token && authenticated) {
+          // These lines decode the JWT token using the jwtDecode function and extract the user_id property from the decoded token.
+          // The optional chaining operator (?.) is used to avoid errors if decodedToken is null or undefined.
           const decodedToken = jwtDecode(token);
           const userId = decodedToken?.user_id;
-
+          // This line checks if the userId is truthy, indicating that a valid user ID was successfully extracted from the decoded token.
           if (userId) {
-            // Fetch user details based on user_id
+            // This line sends a GET request to the server endpoint /users/${userId} to fetch user details corresponding to the userId extracted from the JWT token.
+            // It uses Axios, an HTTP client for the browser and Node.js.
             const userResponse = await axiosInstance.get(`/users/${userId}`);
             // Fetch details based on the user's role
+            // This line extracts the roleName property from the role_id object in the response data obtained from fetching user details.
             const role = userResponse.data?.role_id?.roleName;
-
+            // These lines conditionally send additional requests to fetch specific details based on the user's role (student, teacher, or admin).
+            //  The endpoint URL includes the userId parameter to fetch details related to the specific user.
             let detailsResponse;
             if (role === "student") {
               detailsResponse = await axiosInstance.get(
@@ -44,12 +56,18 @@ const Header = ({ authenticated, setAuthenticated }) => {
 
             if (detailsResponse) {
               // Wait for both responses
+              // Once both promises are resolved, Promise.all() returns an array containing the resolved values of each promise in the same order as the input array.
+              // user will contain the resolved value of userResponse, and details will contain the resolved value of detailsResponse.
+              // This allows us to access the data from both responses conveniently.
               const [user, details] = await Promise.all([
                 userResponse,
                 detailsResponse,
               ]);
-
+              // Here, userDetail is assigned the value of user.data, which contains the user details fetched from the server response.
               const userDetail = user.data;
+
+              // userSpecificDetails is assigned the specific details corresponding to the user's role.
+              // This is determined by finding the details object in the details.data array where the user_id._id matches the _id of the user retrieved earlier.
               const userSpecificDetails = details.data.find(
                 (detail) => detail.user_id._id === userDetail._id
               );
@@ -57,6 +75,9 @@ const Header = ({ authenticated, setAuthenticated }) => {
               console.log("User details:", userDetail);
               console.log(`${role} details in header:`, userSpecificDetails);
 
+              // If userDetail and userSpecificDetails are truthy, the user details are combined into a single object
+              //
+              // This line logs the role and name of the user to the console. It uses optional chaining (?.) to access nested properties safely.and set as the value of userDetails using the setUserDetails function.
               if (userDetail && userSpecificDetails) {
                 // Combine user and specific details
                 const userDetails = {
@@ -67,6 +88,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
                 };
                 console.log("Combined user details:", userDetails);
                 setUserDetails(userDetails);
+                // This line logs the role and name of the user to the console. It uses optional chaining (?.) to access nested properties safely.
                 console.log(
                   `role - name in header ${role} / ${
                     userDetails?.student?.name ??
@@ -75,14 +97,18 @@ const Header = ({ authenticated, setAuthenticated }) => {
                   }`
                 );
               } else {
+                // If either the user or specific details are not found or there's a mismatch in user ID, an error message is logged,
+                // and setUserDetails(null) is called to reset the user details state.
                 console.error(`User or ${role} not found or user_id mismatch`);
                 setUserDetails(null);
               }
             } else {
+              // If details are not found for the user's role, an error message is logged, and setUserDetails(null) is called.
               console.error(`Details not found for role: ${role}`);
               setUserDetails(null);
             }
           } else {
+            // If the user ID is not found in the decoded token, an error message is logged, and setUserDetails(null) is called.
             console.error(
               "User ID not found in the decoded token. Decoded token:",
               decodedToken
@@ -100,28 +126,28 @@ const Header = ({ authenticated, setAuthenticated }) => {
     };
 
     fetchUserDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
 
   // Check if the user is already authenticated
   useEffect(() => {
+    // Retrieve Token and Login Timestamp:
     const token = localStorage.getItem("token");
     console.log("Token in localStorage:", token);
     const loginTimestamp = localStorage.getItem("loginTimestamp");
     console.log("Login timestamp in localStorage:", loginTimestamp);
-  
+    // Check Token and Login Timestamp Existence:
     if (token && loginTimestamp) {
       const currentTime = Date.now();
       const sessionDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
-  
+      // If the difference between the current time and the login timestamp exceeds the session duration (10 minutes in this case), it indicates that the session has expired.
       if (currentTime - parseInt(loginTimestamp) > sessionDuration) {
         // Session has expired, clear localStorage and set authenticated to false
         localStorage.removeItem("token");
         localStorage.removeItem("loginTimestamp");
         setAuthenticated(false);
         navigate("/login");
-        return( console.log("Session expired. Please login again."))
-       
-        ;
+        return console.error("Session expired. Please login again.");
       } else {
         // Session is still valid, set authenticated to true
         setAuthenticated(true);
@@ -130,9 +156,10 @@ const Header = ({ authenticated, setAuthenticated }) => {
       // No token found, set authenticated to false
       setAuthenticated(false);
     }
-  }, [setAuthenticated, navigate]);
-  
+  }, [setAuthenticated, navigate]); //This dependency array ensures that the effect runs whenever either setAuthenticated or navigate changes.
 
+  // This function is called when the user clicks on the logout button.
+  // It removes the JWT token from localStorage, sets the authenticated state to false, clears user details, and navigates the user to the login page.
   const handleLogout = () => {
     localStorage.removeItem("token");
     setAuthenticated(false);
@@ -180,6 +207,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
               <Link className="Header_Links" to="/" onClick={handleLinkClick}>
                 HOME
               </Link>
+              {/* Links based on user role and authentication status   */}
               {authenticated && userDetails ? (
                 <>
                   {userDetails.role_id.roleName === "student" && (

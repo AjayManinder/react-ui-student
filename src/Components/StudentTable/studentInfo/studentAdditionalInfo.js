@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import './studentInfo.css';
+import React, { useState } from "react";
+import "./studentInfo.css";
 
-
-function StudentAdditionalInfo({studentDetails}) {
-  const [selectedTab, setSelectedTab] = useState('Primary');
+function StudentAdditionalInfo({ studentDetails }) {
+  const [selectedTab, setSelectedTab] = useState("Primary");
 
   return (
     <div>
       <h2>CURRICULUM, HOURS & GPA</h2>
       <div>
-        <button onClick={() => setSelectedTab('Primary')}>Primary</button>
-        <button onClick={() => setSelectedTab('Secondary')}>Secondary</button>
-        <button onClick={() => setSelectedTab('Hours & GPA')}>Hours & GPA</button>
+        <button onClick={() => setSelectedTab("Primary")}>Primary</button>
+        <button onClick={() => setSelectedTab("Secondary")}>Secondary</button>
+        <button onClick={() => setSelectedTab("Hours & GPA")}>
+          Hours & GPA
+        </button>
       </div>
       <div>
-        {selectedTab === 'Primary' && (
+        {selectedTab === "Primary" && (
           <div>
             <div className="student-details-text-info">
               <span>Degree:</span>
@@ -66,13 +67,13 @@ function StudentAdditionalInfo({studentDetails}) {
             </div>
           </div>
         )}
-        {selectedTab === 'Secondary' && (
+        {selectedTab === "Secondary" && (
           <div>
             {/* Secondary tab content goes here */}
             {/* You can leave this section empty for now */}
           </div>
         )}
-        {selectedTab === 'Hours & GPA' && (
+        {selectedTab === "Hours & GPA" && (
           <div>
             {/* Hours & GPA tab content goes here */}
             {/* You can leave this section empty for now */}
@@ -80,7 +81,6 @@ function StudentAdditionalInfo({studentDetails}) {
         )}
       </div>
       {/* Add buttons for selecting tabs */}
-     
     </div>
   );
 }

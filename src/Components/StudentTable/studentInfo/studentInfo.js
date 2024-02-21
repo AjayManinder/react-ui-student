@@ -3,15 +3,15 @@ import { Context } from "../../../App";
 import "./studentInfo.css"; // Make sure the path to your CSS file is correct
 import { FiAlignRight } from "react-icons/fi";
 import StudentAdditionalInfo from "./studentAdditionalInfo"; // Make sure the path to your component is correct
-import docx from '../../../docs/React.docx';
+import docx from "../../../docs/React.docx";
 const StudentInfo = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [subjects, setSubjects] = useState([]);
   const [yearSems, setYearSems] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [userDetails, setUserDetails] = useContext(Context);
   const [activeButton, setActiveButton] = useState("general");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
 
   useEffect(() => {
     if (userDetails?.student) {
@@ -36,8 +36,8 @@ const StudentInfo = () => {
         <div className="button-container-desktop">
           <img
             className="profile-image"
-            src={studentDetails.imageUrl}
-            alt="Profile-Image"
+            src={studentDetails?.imageUrl}
+            alt="Profile Pic"
           />
           <button
             className={`info-button ${
@@ -193,7 +193,6 @@ const StudentInfo = () => {
               <div>
                 <h2>Student BIO Information</h2>
                 <div>
-                 
                   <div className="student-details-text-info">
                     <span>Level:</span>
                     <span>{studentDetails.studentBioDetails?.level}</span>
@@ -220,19 +219,27 @@ const StudentInfo = () => {
                   </div>
                   <div className="student-details-text-info">
                     <span>First Term Attended:</span>
-                    <span>{studentDetails.studentBioDetails?.firstTermAttended}</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.firstTermAttended}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Matriculated Term:</span>
-                    <span>{studentDetails.studentBioDetails?.matriculatedTerm}</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.matriculatedTerm}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Last Term Attended:</span>
-                    <span>{studentDetails.studentBioDetails?.lastTermAttended}</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.lastTermAttended}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Leave of Absence:</span>
-                    <span>{studentDetails.studentBioDetails?.leaveOfAbsence}</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.leaveOfAbsence}
+                    </span>
                   </div>
                 </div>
                 {/* </divclassName=> */}
@@ -240,25 +247,34 @@ const StudentInfo = () => {
             </div>
 
             <div className="Additional-info-Container">
-
-<StudentAdditionalInfo studentDetails={studentDetails} />
+              <StudentAdditionalInfo studentDetails={studentDetails} />
             </div>
           </div>
         )}
 
         {activeButton === "subjects" && (
-          <div >
+          <div>
             {" "}
             {/* Make sure this class name matches the one in your CSS */}
             <h2>Subjects</h2>
-            <ul >
+            <ul>
               {subjects.map((subject) => (
                 <li key={subject._id} className="subject-container">
-                 <div className="subjectName"> <strong>{subject.name}</strong>: {subject.description}  </div>
-                  <div className="subjectTopic"><strong>topics</strong>: {subject.topics}</div>
-                   <div className="subjectTopic"><strong>Credits</strong>: {subject.subjectCredits}</div>
-                   <div className="subjectTopic"><a href={docx} download>Download Document</a></div>
-                   
+                  <div className="subjectName">
+                    {" "}
+                    <strong>{subject.name}</strong>: {subject.description}{" "}
+                  </div>
+                  <div className="subjectTopic">
+                    <strong>topics</strong>: {subject.topics}
+                  </div>
+                  <div className="subjectTopic">
+                    <strong>Credits</strong>: {subject.subjectCredits}
+                  </div>
+                  <div className="subjectTopic">
+                    <a href={docx} download>
+                      Download Document
+                    </a>
+                  </div>
                 </li>
               ))}
             </ul>
