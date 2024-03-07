@@ -3,14 +3,20 @@ import { Context } from "../../../App";
 import "./studentInfo.css"; // Make sure the path to your CSS file is correct
 import { FiAlignRight } from "react-icons/fi";
 import StudentAdditionalInfo from "./studentAdditionalInfo"; // Make sure the path to your component is correct
+import docx from "../../../docs/React.docx";
+import Calendar from 'react-calendar';
+import axiosInstance from "../../../axiosConfig";
+// import 'react-calendar/dist/Calendar.css';
 const StudentInfo = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [subjects, setSubjects] = useState([]);
   const [yearSems, setYearSems] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [userDetails, setUserDetails] = useContext(Context);
   const [activeButton, setActiveButton] = useState("general");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [date, setDate] = useState(new Date());
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (userDetails?.student) {
@@ -24,20 +30,71 @@ const StudentInfo = () => {
     setActiveButton(buttonType);
     setIsDropdownOpen(false);
   };
+  const handleUpload = async () => {
+    if (!image) {
+      alert('Please select an image to upload');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('image', image);
+  
+    try {
+      const response = await axiosInstance.put(`/students/upload-image/${studentDetails.rollNo}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      // Assuming the response contains the URL of the uploaded image
+      const imageUrl = response.data.imageUrl;
+  
+      // Update studentDetails with the new image URL
+      setStudentDetails(prevStudentDetails => ({
+        ...prevStudentDetails,
+        imageUrl: imageUrl
+      }));
+  
+      alert('Image uploaded successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to upload image');
+    }
+  };
+
+
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete(`/students/delete-image/${studentDetails.rollNo}`);
+      alert('Image deleted successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to delete image');
+    }
+  };
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const onChangeC = (newDate) => {
+    setDate(newDate);
   };
 
   return (
     <div className="student-info-container">
       <div className="desktop-links-button">
         <div className="button-container-desktop">
-          <img
-            className="profile-image"
-            src="https://images.unsplash.com/photo-1661745688379-6f43af8e77bf?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Profile-Image"
-          />
+        <img
+        className="profile-image"
+        src={studentDetails.imageUrl}
+        alt="Profile Pic"
+      />
+      <div>
+      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+      </div>
+      <button onClick={handleUpload}>Upload</button>
+      <button onClick={handleDelete}>Delete</button>
           <button
             className={`info-button ${
               activeButton === "general" ? "active" : ""
@@ -64,49 +121,49 @@ const StudentInfo = () => {
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "grades" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("grades")}
           >
             Grades
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "subjectsEnrolled" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("subjectsEnrolled")}
           >
             Subjects Enrolled
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "financialInfo" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("financialInfo")}
           >
             Financial Info
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "transcripts" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("transcripts")}
           >
             Transcripts
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "attendence" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("attendence")}
           >
             Attendence
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "reportCard" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("reportCard")}
           >
             Report Card
           </button>
@@ -175,7 +232,7 @@ const StudentInfo = () => {
                     <span>Roll Number:</span>
                     <span>
                       {studentDetails.rollNo}
-                      {studentDetails.rollNo}
+                      {/* {studentDetails.rollNo} */}
                     </span>{" "}
                   </div>
                   <div className="student-details-text-info">
@@ -191,70 +248,96 @@ const StudentInfo = () => {
 
               <div>
                 <h2>Student BIO Information</h2>
-                <div>
-                 
+              
                   <div className="student-details-text-info">
                     <span>Level:</span>
-                    <span>N/A</span>
+                    <span>{studentDetails.studentBioDetails?.level}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Class:</span>
-                    <span>Graduate</span>
+                    <span>{studentDetails.studentBioDetails?.class}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Status:</span>
-                    <span>Active</span>
+                    <span>{studentDetails.studentBioDetails?.status}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Student Type:</span>
-                    <span>Masters - Graduate</span>
+                    <span>{studentDetails.studentBioDetails?.studentType}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Residency:</span>
-                    <span>International</span>
+                    <span>{studentDetails.studentBioDetails?.residency}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Campus:</span>
-                    <span>Not Provided</span>
+                    <span>{studentDetails.studentBioDetails?.campus}</span>
                   </div>
                   <div className="student-details-text-info">
                     <span>First Term Attended:</span>
-                    <span>Fall 2021</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.firstTermAttended}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Matriculated Term:</span>
-                    <span>Not Provided</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.matriculatedTerm}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Last Term Attended:</span>
-                    <span>Fall 2022</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.lastTermAttended}
+                    </span>
                   </div>
                   <div className="student-details-text-info">
                     <span>Leave of Absence:</span>
-                    <span>Not Provided</span>
+                    <span>
+                      {studentDetails.studentBioDetails?.leaveOfAbsence}
+                    </span>
                   </div>
-                </div>
+               
                 {/* </divclassName=> */}
               </div>
             </div>
 
             <div className="Additional-info-Container">
-
-<StudentAdditionalInfo />
+              <StudentAdditionalInfo studentDetails={studentDetails} />
             </div>
-          </div>
+          
+               <Calendar
+        onChange={onChangeC}
+        value={date}
+        // Other props can be added here for customization
+      />
+            </div>
+         
         )}
 
         {activeButton === "subjects" && (
-          <div className="subject-container">
+          <div>
             {" "}
             {/* Make sure this class name matches the one in your CSS */}
             <h2>Subjects</h2>
             <ul>
               {subjects.map((subject) => (
-                <li key={subject._id}>
-                  <strong>{subject.name}</strong>: {subject.description}
-                  <div>topics: {subject.topics}</div>
+                <li key={subject._id} className="subject-container">
+                  <div className="subjectName">
+                    {" "}
+                    <strong>{subject.name}</strong>: {subject.description}{" "}
+                  </div>
+                  <div className="subjectTopic">
+                    <strong>topics</strong>: {subject.topics}
+                  </div>
+                  <div className="subjectTopic">
+                    <strong>Credits</strong>: {subject.subjectCredits}
+                  </div>
+                  <div className="subjectTopic">
+                    <a href={docx} download>
+                      Download Document
+                    </a>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -275,6 +358,12 @@ const StudentInfo = () => {
             </ul>
           </div>
         )}
+        {activeButton === "reportCard" && (
+          <div className="reportCard-container">
+           
+          </div>
+        )}
+        
       </div>
     </div>
   );

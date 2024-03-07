@@ -1,6 +1,6 @@
-import React from 'react';
-import axiosInstance from '../../axiosConfig';
-import {  FaTrash } from 'react-icons/fa';
+import React from "react";
+import axiosInstance from "../../axiosConfig";
+import { FaTrash } from "react-icons/fa";
 
 const DeleteStudent = ({ rollNo, deleteStudent }) => {
   const handleDelete = async () => {
@@ -8,12 +8,14 @@ const DeleteStudent = ({ rollNo, deleteStudent }) => {
       await axiosInstance.delete(`/students/${rollNo}`);
       deleteStudent(rollNo);
     } catch (error) {
-      console.error('Error deleting student:', error);
+      console.error("Error deleting student:", error);
     }
   };
 
   return (
-    <button className="edit-btn" onClick={handleDelete}><FaTrash/></button>
+    <button className="edit-btn" onClick={handleDelete}>
+      <FaTrash />
+    </button>
   );
 };
 
