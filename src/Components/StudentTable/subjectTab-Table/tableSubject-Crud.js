@@ -7,6 +7,7 @@ import { Context } from '../../../App';
 const TableSubjectCrud = ({ data, onEditSubject }) => {
   const [isEditing, setEditing] = useState(false);
   const [editedSubjectData, setSubjectEditedData] = useState({ ...data });
+  // eslint-disable-next-line no-unused-vars
   const [userDetails, setUserDetails] = useContext(Context);
   const handleEditClick = () => {
     setEditing(true);
