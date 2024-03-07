@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Footer from "./Footer/footer";
 import UsersTable from "./Components/StudentTable/userTable/usersTable";
 import StudentInfo from "./Components/StudentTable/studentInfo/studentInfo";
+import SubjectRegistration from "./Components/StudentTable/subjectsRegistration/SubjectsRegistration";
 import "./App.css";
 
 export const Context = React.createContext();
@@ -42,6 +43,10 @@ const App = () => {
             <Route
               path="/studentInfo"
               element={authenticated ? <StudentInfo /> : <Login />}
+            />
+             <Route
+              path="/subjectRegistration"
+              element={authenticated ? <SubjectRegistration /> : <Login />}
             />
             {/* Add more routes here as needed */}
           </Routes>

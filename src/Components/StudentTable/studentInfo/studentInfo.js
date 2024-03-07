@@ -4,6 +4,9 @@ import "./studentInfo.css"; // Make sure the path to your CSS file is correct
 import { FiAlignRight } from "react-icons/fi";
 import StudentAdditionalInfo from "./studentAdditionalInfo"; // Make sure the path to your component is correct
 import docx from "../../../docs/React.docx";
+import Calendar from 'react-calendar';
+import axiosInstance from "../../../axiosConfig";
+// import 'react-calendar/dist/Calendar.css';
 const StudentInfo = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const [subjects, setSubjects] = useState([]);
@@ -12,6 +15,8 @@ const StudentInfo = () => {
   const [userDetails, setUserDetails] = useContext(Context);
   const [activeButton, setActiveButton] = useState("general");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (userDetails?.student) {
@@ -25,20 +30,71 @@ const StudentInfo = () => {
     setActiveButton(buttonType);
     setIsDropdownOpen(false);
   };
+  const handleUpload = async () => {
+    if (!image) {
+      alert('Please select an image to upload');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('image', image);
+  
+    try {
+      const response = await axiosInstance.put(`/students/upload-image/${studentDetails.rollNo}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      // Assuming the response contains the URL of the uploaded image
+      const imageUrl = response.data.imageUrl;
+  
+      // Update studentDetails with the new image URL
+      setStudentDetails(prevStudentDetails => ({
+        ...prevStudentDetails,
+        imageUrl: imageUrl
+      }));
+  
+      alert('Image uploaded successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to upload image');
+    }
+  };
+
+
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete(`/students/delete-image/${studentDetails.rollNo}`);
+      alert('Image deleted successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to delete image');
+    }
+  };
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const onChangeC = (newDate) => {
+    setDate(newDate);
   };
 
   return (
     <div className="student-info-container">
       <div className="desktop-links-button">
         <div className="button-container-desktop">
-          <img
-            className="profile-image"
-            src={studentDetails?.imageUrl}
-            alt="Profile Pic"
-          />
+        <img
+        className="profile-image"
+        src={studentDetails.imageUrl}
+        alt="Profile Pic"
+      />
+      <div>
+      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+      </div>
+      <button onClick={handleUpload}>Upload</button>
+      <button onClick={handleDelete}>Delete</button>
           <button
             className={`info-button ${
               activeButton === "general" ? "active" : ""
@@ -65,49 +121,49 @@ const StudentInfo = () => {
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "grades" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("grades")}
           >
             Grades
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "subjectsEnrolled" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("subjectsEnrolled")}
           >
             Subjects Enrolled
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "financialInfo" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("financialInfo")}
           >
             Financial Info
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "transcripts" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("transcripts")}
           >
             Transcripts
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "attendence" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("attendence")}
           >
             Attendence
           </button>
           <button
             className={`info-button ${
-              activeButton === "yearSem" ? "active" : ""
+              activeButton === "reportCard" ? "active" : ""
             }`}
-            onClick={() => handleButtonClick("yearSem")}
+            onClick={() => handleButtonClick("reportCard")}
           >
             Report Card
           </button>
@@ -176,7 +232,7 @@ const StudentInfo = () => {
                     <span>Roll Number:</span>
                     <span>
                       {studentDetails.rollNo}
-                      {studentDetails.rollNo}
+                      {/* {studentDetails.rollNo} */}
                     </span>{" "}
                   </div>
                   <div className="student-details-text-info">
@@ -192,7 +248,7 @@ const StudentInfo = () => {
 
               <div>
                 <h2>Student BIO Information</h2>
-                <div>
+              
                   <div className="student-details-text-info">
                     <span>Level:</span>
                     <span>{studentDetails.studentBioDetails?.level}</span>
@@ -241,7 +297,7 @@ const StudentInfo = () => {
                       {studentDetails.studentBioDetails?.leaveOfAbsence}
                     </span>
                   </div>
-                </div>
+               
                 {/* </divclassName=> */}
               </div>
             </div>
@@ -249,7 +305,14 @@ const StudentInfo = () => {
             <div className="Additional-info-Container">
               <StudentAdditionalInfo studentDetails={studentDetails} />
             </div>
-          </div>
+          
+               <Calendar
+        onChange={onChangeC}
+        value={date}
+        // Other props can be added here for customization
+      />
+            </div>
+         
         )}
 
         {activeButton === "subjects" && (
@@ -295,6 +358,12 @@ const StudentInfo = () => {
             </ul>
           </div>
         )}
+        {activeButton === "reportCard" && (
+          <div className="reportCard-container">
+           
+          </div>
+        )}
+        
       </div>
     </div>
   );

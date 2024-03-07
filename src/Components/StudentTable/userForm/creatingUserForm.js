@@ -25,6 +25,8 @@ const CreateUserForm = () => {
     },
   });
 
+  const [showData, setShowData] = useState(false);
+
   const fetchData = async () => {
     try {
       const [rolesRes, subjectsRes, yearSemestersRes] = await Promise.all([
@@ -142,6 +144,7 @@ const CreateUserForm = () => {
       }
 
       console.log("New data created:", responseData.data);
+      setShowData(true);
       setFormData({
         user_id: "",
         email: "",
@@ -163,6 +166,9 @@ const CreateUserForm = () => {
           email: "",
         },
       });
+      setTimeout(() => {
+        setShowData(false);
+      }, 10000);
       alert("User and data created successfully.");
     } catch (error) {
       console.error("Error creating user or data:", error);
@@ -179,6 +185,7 @@ const CreateUserForm = () => {
     }
   };
   return (
+    <>
     <form onSubmit={handleSubmit} className="create-user-form">
       <label>
         User ID :
@@ -405,6 +412,15 @@ const CreateUserForm = () => {
 
       <button type="submit">Submit</button>
     </form>
+     {showData && (
+      <div className="data-section">
+       
+        <p>User ID: {formData.user_id}</p>
+        <p>Email: {formData.email}</p>
+      {/* Display the newly created data here */}
+      </div>
+    )}
+    </>
   );
 };
 

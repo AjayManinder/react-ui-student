@@ -3,6 +3,8 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../axiosConfig";
+import Button from "responsive-ui-components/dist/Button";
+import InputText from "responsive-ui-components/dist/InputText";
 
 const MAX_LOGIN_ATTEMPTS = 5;
 
@@ -177,9 +179,10 @@ const Login = ({ setAuthenticated }) => {
           </div>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button className="login-btn" onClick={handleLogin} disabled={disabled}>
+        {/* <button className="login-btn" >
           Login
-        </button>
+        </button> */}
+        <Button text="Login" color="primary" size="small" onClick={handleLogin} disabled={disabled}/>
         <div className="link-Fp">
           <Link className="link-forgotpassword" to="/login">
             Forgot Password

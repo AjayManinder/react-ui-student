@@ -162,6 +162,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
   // It removes the JWT token from localStorage, sets the authenticated state to false, clears user details, and navigates the user to the login page.
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("loginTimestamp");
     setAuthenticated(false);
     setUserDetails(null);
     navigate("/login");
@@ -292,13 +293,22 @@ const Header = ({ authenticated, setAuthenticated }) => {
               {authenticated && userDetails && (
                 <>
                   {userDetails.role_id.roleName === "student" && (
-                    <Link
+                   <>
+                   <Link
                       className="Header_Links"
                       to="/studentInfo"
                       onClick={handleLinkClick}
                     >
                       Student Info
                     </Link>
+                    <Link
+                    className="Header_Links"
+                    to="/subjectRegistration"
+                    onClick={handleLinkClick}
+                  >
+                    Subject Registration
+                  </Link>
+                  </>
                   )}
                   {userDetails.role_id.roleName === "admin" && (
                     <Link
