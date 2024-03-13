@@ -4,8 +4,9 @@ import "./studentInfo.css"; // Make sure the path to your CSS file is correct
 import { FiAlignRight } from "react-icons/fi";
 import StudentAdditionalInfo from "./studentAdditionalInfo"; // Make sure the path to your component is correct
 import docx from "../../../docs/React.docx";
-import Calendar from 'react-calendar';
+import Calendar from "react-calendar";
 import axiosInstance from "../../../axiosConfig";
+import { RiEdit2Line, RiCloseLine } from "react-icons/ri";
 // import 'react-calendar/dist/Calendar.css';
 const StudentInfo = () => {
   const [studentDetails, setStudentDetails] = useState({});
@@ -17,7 +18,9 @@ const StudentInfo = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [image, setImage] = useState(null);
-
+  // eslint-disable-next-line no-unused-vars
+  const [onEditProfileImageButton, setOnEditProfileImageButton] =
+    useState(false);
   useEffect(() => {
     if (userDetails?.student) {
       setStudentDetails(userDetails.student);
@@ -32,44 +35,63 @@ const StudentInfo = () => {
   };
   const handleUpload = async () => {
     if (!image) {
-      alert('Please select an image to upload');
+      alert("Please select an image to upload");
       return;
     }
-  
+
     const formData = new FormData();
-    formData.append('image', image);
-  
+    formData.append("image", image);
+
     try {
-      const response = await axiosInstance.put(`/students/upload-image/${studentDetails.rollNo}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const response = await axiosInstance.put(
+        `/students/upload-image/${studentDetails.rollNo}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
-  
+      );
+
       // Assuming the response contains the URL of the uploaded image
       const imageUrl = response.data.imageUrl;
-  
+
       // Update studentDetails with the new image URL
-      setStudentDetails(prevStudentDetails => ({
+      setStudentDetails((prevStudentDetails) => ({
         ...prevStudentDetails,
-        imageUrl: imageUrl
+        imageUrl: imageUrl,
       }));
-  
-      alert('Image uploaded successfully');
+
+      alert("Image uploaded successfully");
+      setOnEditProfileImageButton(false);
     } catch (error) {
       console.error(error);
-      alert('Failed to upload image');
+      alert("Failed to upload image");
     }
   };
 
+  const showProfileImageEditActions = () => {
+    setOnEditProfileImageButton(true);
+  };
+
+  const hideProfileImageEditActions = () => {
+    setOnEditProfileImageButton(false);
+  };
+
+  const handleResetProfileImage=()=>{
+    setImage(null);
+  }
 
   const handleDelete = async () => {
     try {
-      await axiosInstance.delete(`/students/delete-image/${studentDetails.rollNo}`);
-      alert('Image deleted successfully');
+      await axiosInstance.delete(
+        `/students/delete-image/${studentDetails.rollNo}`
+      );
+      alert("Image deleted successfully");
+      setOnEditProfileImageButton(false);
     } catch (error) {
       console.error(error);
-      alert('Failed to delete image');
+      alert("Failed to delete image");
     }
   };
 
@@ -85,16 +107,69 @@ const StudentInfo = () => {
     <div className="student-info-container">
       <div className="desktop-links-button">
         <div className="button-container-desktop">
-        <img
-        className="profile-image"
-        src={studentDetails.imageUrl}
-        alt="Profile Pic"
-      />
-      <div>
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-      </div>
-      <button onClick={handleUpload}>Upload</button>
-      <button onClick={handleDelete}>Delete</button>
+          <div>
+            <img
+              className="profile-image"
+              src={studentDetails.imageUrl}
+              alt="Profile Pic"
+            />
+            <div className="profileImageActions">
+              {!onEditProfileImageButton ? (
+                <button
+                  className="profileImageIcons"
+                  onClick={showProfileImageEditActions}
+                >
+                  <RiEdit2Line />
+                </button>
+              ) : (
+                <button
+                  className="profileImageIcons"
+                  onClick={()=>{hideProfileImageEditActions(); handleResetProfileImage();}}
+                >
+                  <RiCloseLine />
+                </button>
+              )}
+            </div>
+          </div>
+          {onEditProfileImageButton ? (
+            <>
+              <div className="input-container">
+                <label htmlFor="file-upload" className="chooseFileBtn">
+                  Choose File
+                </label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                <div className="imageUploadName">
+                  {image && (
+                    <div className="imageuploadCancel">
+                      <div>Selected File: {image.name}</div>{" "}
+                      <button
+                        className="uploadCancel-btn"
+                        onClick={handleResetProfileImage}
+                      >
+                        <RiCloseLine />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {image && (
+                <div className="buttonActions">
+                  <button className="upload-btn" onClick={handleUpload}>
+                    Upload
+                  </button>
+                  <button className="delete-btn" onClick={handleDelete}>
+                    Delete
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            ""
+          )}
           <button
             className={`info-button ${
               activeButton === "general" ? "active" : ""
@@ -213,6 +288,54 @@ const StudentInfo = () => {
           >
             Year/Semester
           </button>
+          <button
+            className={`info-button ${
+              activeButton === "grades" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("grades")}
+          >
+            Grades
+          </button>
+          <button
+            className={`info-button ${
+              activeButton === "subjectsEnrolled" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("subjectsEnrolled")}
+          >
+            Subjects Enrolled
+          </button>
+          <button
+            className={`info-button ${
+              activeButton === "financialInfo" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("financialInfo")}
+          >
+            Financial Info
+          </button>
+          <button
+            className={`info-button ${
+              activeButton === "transcripts" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("transcripts")}
+          >
+            Transcripts
+          </button>
+          <button
+            className={`info-button ${
+              activeButton === "attendence" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("attendence")}
+          >
+            Attendence
+          </button>
+          <button
+            className={`info-button ${
+              activeButton === "reportCard" ? "active" : ""
+            }`}
+            onClick={() => handleButtonClick("reportCard")}
+          >
+            Report Card
+          </button>
           {/* </div> */}
         </div>
       </div>
@@ -220,6 +343,71 @@ const StudentInfo = () => {
       <div className="info-container">
         {activeButton === "general" && (
           <div className="student-main-container">
+            <div className="profile-container-mobileview">
+            <div className="profile-image-mobileview">
+            <img
+              className="profile-image"
+              src={studentDetails.imageUrl}
+              alt="Profile Pic"
+            />
+            <div className="profileImageActions">
+              {!onEditProfileImageButton ? (
+                <button
+                  className="profileImageIcons"
+                  onClick={showProfileImageEditActions}
+                >
+                  <RiEdit2Line />
+                </button>
+              ) : (
+                <button
+                  className="profileImageIcons"
+                  onClick={()=>{hideProfileImageEditActions(); handleResetProfileImage();}}
+                >
+                  <RiCloseLine />
+                </button>
+              )}
+            </div>
+          </div>
+          {onEditProfileImageButton ? (
+            <>
+              <div className="input-container">
+                <label htmlFor="file-upload" className="chooseFileBtn">
+                  Choose File
+                </label>
+                <input
+                  id="file-upload"
+                  type="file"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                <div className="imageUploadName">
+                  {image && (
+                    <div className="imageuploadCancel">
+                      <div>Selected File: {image.name}</div>{" "}
+                      <button
+                        className="uploadCancel-btn"
+                        onClick={handleResetProfileImage}
+                      >
+                        <RiCloseLine />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {image && (
+                <div className="buttonActions">
+                  <button className="upload-btn" onClick={handleUpload}>
+                    Upload
+                  </button>
+                  <button className="delete-btn" onClick={handleDelete}>
+                    Delete
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            ""
+          )}
+            </div>
             <div className="student-information-main-container">
               <div>
                 <h2>Student Information</h2>
@@ -248,56 +436,56 @@ const StudentInfo = () => {
 
               <div>
                 <h2>Student BIO Information</h2>
-              
-                  <div className="student-details-text-info">
-                    <span>Level:</span>
-                    <span>{studentDetails.studentBioDetails?.level}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Class:</span>
-                    <span>{studentDetails.studentBioDetails?.class}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Status:</span>
-                    <span>{studentDetails.studentBioDetails?.status}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Student Type:</span>
-                    <span>{studentDetails.studentBioDetails?.studentType}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Residency:</span>
-                    <span>{studentDetails.studentBioDetails?.residency}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Campus:</span>
-                    <span>{studentDetails.studentBioDetails?.campus}</span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>First Term Attended:</span>
-                    <span>
-                      {studentDetails.studentBioDetails?.firstTermAttended}
-                    </span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Matriculated Term:</span>
-                    <span>
-                      {studentDetails.studentBioDetails?.matriculatedTerm}
-                    </span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Last Term Attended:</span>
-                    <span>
-                      {studentDetails.studentBioDetails?.lastTermAttended}
-                    </span>
-                  </div>
-                  <div className="student-details-text-info">
-                    <span>Leave of Absence:</span>
-                    <span>
-                      {studentDetails.studentBioDetails?.leaveOfAbsence}
-                    </span>
-                  </div>
-               
+
+                <div className="student-details-text-info">
+                  <span>Level:</span>
+                  <span>{studentDetails.studentBioDetails?.level}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Class:</span>
+                  <span>{studentDetails.studentBioDetails?.class}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Status:</span>
+                  <span>{studentDetails.studentBioDetails?.status}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Student Type:</span>
+                  <span>{studentDetails.studentBioDetails?.studentType}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Residency:</span>
+                  <span>{studentDetails.studentBioDetails?.residency}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Campus:</span>
+                  <span>{studentDetails.studentBioDetails?.campus}</span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>First Term Attended:</span>
+                  <span>
+                    {studentDetails.studentBioDetails?.firstTermAttended}
+                  </span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Matriculated Term:</span>
+                  <span>
+                    {studentDetails.studentBioDetails?.matriculatedTerm}
+                  </span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Last Term Attended:</span>
+                  <span>
+                    {studentDetails.studentBioDetails?.lastTermAttended}
+                  </span>
+                </div>
+                <div className="student-details-text-info">
+                  <span>Leave of Absence:</span>
+                  <span>
+                    {studentDetails.studentBioDetails?.leaveOfAbsence}
+                  </span>
+                </div>
+
                 {/* </divclassName=> */}
               </div>
             </div>
@@ -305,14 +493,13 @@ const StudentInfo = () => {
             <div className="Additional-info-Container">
               <StudentAdditionalInfo studentDetails={studentDetails} />
             </div>
-          
-               <Calendar
-        onChange={onChangeC}
-        value={date}
-        // Other props can be added here for customization
-      />
-            </div>
-         
+
+            <Calendar
+              onChange={onChangeC}
+              value={date}
+              // Other props can be added here for customization
+            />
+          </div>
         )}
 
         {activeButton === "subjects" && (
@@ -359,11 +546,8 @@ const StudentInfo = () => {
           </div>
         )}
         {activeButton === "reportCard" && (
-          <div className="reportCard-container">
-           
-          </div>
+          <div className="reportCard-container"></div>
         )}
-        
       </div>
     </div>
   );

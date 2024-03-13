@@ -139,7 +139,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
     // Check Token and Login Timestamp Existence:
     if (token && loginTimestamp) {
       const currentTime = Date.now();
-      const sessionDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
+      const sessionDuration = 60 * 60 * 1000; // 60 minutes in milliseconds
       // If the difference between the current time and the login timestamp exceeds the session duration (10 minutes in this case), it indicates that the session has expired.
       if (currentTime - parseInt(loginTimestamp) > sessionDuration) {
         // Session has expired, clear localStorage and set authenticated to false
@@ -212,15 +212,25 @@ const Header = ({ authenticated, setAuthenticated }) => {
               {authenticated && userDetails ? (
                 <>
                   {userDetails.role_id.roleName === "student" && (
-                    <Link
-                      className="Header_Links"
-                      to="/studentInfo"
-                      onClick={handleLinkClick}
-                    >
-                      Student Info
-                    </Link>
+                    <>
+                      <Link
+                        className="Header_Links"
+                        to="/studentInfo"
+                        onClick={handleLinkClick}
+                      >
+                        Student Info
+                      </Link>
+                      <Link
+                        className="Header_Links"
+                        to="/subjectRegistration"
+                        onClick={handleLinkClick}
+                      >
+                        Subject Registration
+                      </Link>
+                    </>
                   )}
                   {userDetails.role_id.roleName === "admin" && (
+                    <>
                     <Link
                       className="Header_Links"
                       to="/table"
@@ -228,25 +238,28 @@ const Header = ({ authenticated, setAuthenticated }) => {
                     >
                       TABLE
                     </Link>
+                     <Link
+                     className="Header_Links"
+                     to="/users"
+                     onClick={handleLinkClick}
+                   >
+                     Users
+                   </Link>
+                 </>
                   )}
                   {userDetails.role_id.roleName === "teacher" && (
-                    <Link
-                      className="Header_Links"
-                      to="/table"
-                      onClick={handleLinkClick}
-                    >
-                      TABLE
-                    </Link>
+                    
+                      <Link
+                        className="Header_Links"
+                        to="/table"
+                        onClick={handleLinkClick}
+                      >
+                        TABLE
+                      </Link>
+
+                     
                   )}
-                  {userDetails.role_id.roleName === "admin" && (
-                    <Link
-                      className="Header_Links"
-                      to="/users"
-                      onClick={handleLinkClick}
-                    >
-                      Users
-                    </Link>
-                  )}
+
                   {/* User details and logout button */}
                   <div className="Header-Userdetails">
                     <div className="Header_Links_User">
@@ -293,31 +306,41 @@ const Header = ({ authenticated, setAuthenticated }) => {
               {authenticated && userDetails && (
                 <>
                   {userDetails.role_id.roleName === "student" && (
-                   <>
-                   <Link
-                      className="Header_Links"
-                      to="/studentInfo"
-                      onClick={handleLinkClick}
-                    >
-                      Student Info
-                    </Link>
-                    <Link
-                    className="Header_Links"
-                    to="/subjectRegistration"
-                    onClick={handleLinkClick}
-                  >
-                    Subject Registration
-                  </Link>
-                  </>
+                    <>
+                      <Link
+                        className="Header_Links"
+                        to="/studentInfo"
+                        onClick={handleLinkClick}
+                      >
+                        Student Info
+                      </Link>
+                      <Link
+                        className="Header_Links"
+                        to="/subjectRegistration"
+                        onClick={handleLinkClick}
+                      >
+                        Subject Registration
+                      </Link>
+                    </>
                   )}
                   {userDetails.role_id.roleName === "admin" && (
-                    <Link
-                      className="Header_Links"
-                      to="/table"
-                      onClick={handleLinkClick}
-                    >
-                      TABLE
-                    </Link>
+                    <>
+                      <Link
+                        className="Header_Links"
+                        to="/table"
+                        onClick={handleLinkClick}
+                      >
+                        TABLE
+                      </Link>
+
+                      <Link
+                        className="Header_Links"
+                        to="/users"
+                        onClick={handleLinkClick}
+                      >
+                        Users
+                      </Link>
+                    </>
                   )}
                   {userDetails.role_id.roleName === "teacher" && (
                     <Link
@@ -328,15 +351,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
                       TABLE
                     </Link>
                   )}
-                  {userDetails.role_id.roleName === "admin" && (
-                    <Link
-                      className="Header_Links"
-                      to="/users"
-                      onClick={handleLinkClick}
-                    >
-                      Users
-                    </Link>
-                  )}
+
                   {/* User details and logout button */}
                   <div className="Header-Userdetails">
                     <div className="Header_Links_User">

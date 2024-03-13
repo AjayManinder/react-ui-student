@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axiosInstance from "../axiosConfig";
 import Button from "responsive-ui-components/dist/Button";
+ // eslint-disable-next-line no-unused-vars
 import InputText from "responsive-ui-components/dist/InputText";
 
 const MAX_LOGIN_ATTEMPTS = 5;

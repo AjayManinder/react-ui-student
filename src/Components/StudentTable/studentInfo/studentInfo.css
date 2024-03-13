@@ -35,7 +35,6 @@
   width: 140px;
   height: 150px;
   margin-top: 10px;
-  margin-bottom: 10px;
   border-radius: 10%;
 }
 
@@ -128,6 +127,65 @@
     position: fixed;
   }
 
+
+  .profile-container-mobileview{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-image-mobileview {
+    display: flex;
+    justify-content: center;
+  }
+  
+
+  .profile-image-mobileview .profile-image{
+    width: 50%;
+    min-width: 250px;
+    height: 100%;
+    max-height: 280px;
+    position: relative;
+    left: 15px;
+    /* top:10px; */
+  }
+
+  .profile-image-mobileview .profileImageActions {
+    display: block;
+    position: relative;
+    right: 15px;
+    top:10px;
+  }
+  .profile-image-mobileview .profileImageIcons{
+    width: 30px;
+    height: 20px;    
+    border-radius: 30%;
+    background-color: rgb(249, 240, 222);
+  }
+
+
+
+  .input-container .imageUploadName .imageuploadCancel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 5px;
+    color: rgb(5, 5, 5);
+  }
+ .input-container{
+  margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+   
+ }
+  .input-container .imageUploadName{
+    max-width: 200px;
+    font-size: small;
+}
+
   .desktop-links-button {
     display: none;
   }
@@ -163,6 +221,15 @@
     align-items: start;
   }
 }
+
+@media screen and (min-width: 820px) {
+  .profile-container-mobileview{
+  display: none;
+}
+}
+
+
+
 
 .dropdown-contents-mobile-view.show {
   display: block;
@@ -410,3 +477,88 @@
     /* padding: 30px; */
   }
 }
+
+
+
+.input-container input[type="file"] {
+  display: none; 
+}
+.input-container{
+  margin-bottom: 5px;
+  max-width: 200px;
+}
+
+.imageUploadName{
+  max-width: 100px;
+  font-size: x-small;
+}
+
+.imageuploadCancel{
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 5px;
+  color: whitesmoke;
+}
+
+.uploadCancel-btn{
+  display: flex;
+  height: 20px;
+  border-radius: 10%;
+  font-size: small;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid black;
+  color: white;
+  font-weight:bold;
+  background-color: rgb(254, 122, 122);
+}
+
+.buttonActions{
+  /* margin-top: 10px; */
+  margin-bottom: 5px;
+  
+}
+
+.profileImageIcons{
+  border-radius: 50%;
+  color: black;
+  background-color:rgb(255, 255, 255);
+}
+.profileImageActions{
+  top: 8px;
+  right: 5px;
+  position: absolute;
+}
+
+.upload-btn,
+.delete-btn {
+  padding: 2px;
+  background-color: #c2ecfd; 
+  color: rgb(21, 20, 20);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.chooseFileBtn{
+
+  padding: 2px;
+  background-color: #c2ecfd; 
+  color: rgb(21, 20, 20);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.upload-btn:hover,
+.delete-btn:hover {
+  background-color: #cff1d1;
+}
+
