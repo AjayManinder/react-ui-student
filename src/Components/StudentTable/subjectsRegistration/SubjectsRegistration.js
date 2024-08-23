@@ -5,7 +5,9 @@ import { Context } from "../../../App";
 
 const SubjectRegistration = () => {
   const [subjects, setSubjects] = useState([]);
-  const [studentSubjects, setStudentSubjects] = useState([]); // Initialize as an empty array
+  // eslint-disable-next-line no-unused-vars
+  const [studentSubjects, setStudentSubjects] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [userDetails, setUserDetails] = useContext(Context);
 
   useEffect(() => {
@@ -24,32 +26,8 @@ const SubjectRegistration = () => {
       .catch(error => {
         console.error('Error fetching student subjects:', error);
       });
-  }, [userDetails]); // Include userDetails in the dependency array
-
-  // const handleRegisterSubject = async (subjectId) => {
-  //   try {
-  //     if (studentSubjects.some(subject => subject._id === subjectId)) {
-  //       alert('Subject already registered!');
-  //     } else {
-  //       const rollNo = userDetails?.student?.rollNo; // Get the rollNo from userDetails
-  //       if (!rollNo) {
-  //         // Handle case where rollNo is not available
-  //         return;
-  //       }
+  }, [userDetails]); 
   
-  //       await axiosInstance.put(`/students/${rollNo}`, { // Use rollNo in the PUT request
-  //         subjectIds: [...studentSubjects, subjectId],
-  //       });
-  
-  //       setStudentSubjects(prevStudentSubjects => [...prevStudentSubjects, subjectId]);
-  
-  //       alert('Subject added successfully!');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error adding subject:', error);
-  //     alert('An error occurred while adding subject.');
-  //   }
-  // };
 
   const handleRegisterSubject = async (subjectId) => {
     try {
@@ -83,11 +61,6 @@ const SubjectRegistration = () => {
       alert(error.message || 'An error occurred while adding subject.');
     }
   };
-  
-  
-  
-  
-
   return (
     <div className="subject-registration">
       <h2>Subject Registration</h2>
