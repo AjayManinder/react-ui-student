@@ -1,0 +1,44 @@
+.subject-registration {
+    /* max-width: 800px; */
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .subject-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+  }
+  
+  .subject {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .subject h3 {
+    margin-top: 0;
+  }
+  
+  .subject p {
+    margin: 5px 0;
+  }
+  
+  .register-subject{
+    padding: 5px;
+    width: 70px;
+    color: rgb(2, 2, 42);
+    background-color: antiquewhite;
+
+  }
+
+  .register-subject:hover{
+    cursor: pointer;
+  }
+
+  .register-subject-container{
+    margin-top: 20px;
+  }

@@ -1,0 +1,62 @@
+/* usersTable.css */
+
+.usersTable {
+  margin: 20px;
+}
+
+.tableTitle {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.tableContainer {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableCell {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.tableHeader {
+  background-color: #f2f2f2;
+}
+
+.rowHover:hover {
+  background-color: #f5f5f5;
+}
+
+.loadingMessage,
+.errorMessage {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .tableCell {
+    padding: 6px;
+  }
+
+  .tableTitle {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .tableCell {
+    padding: 4px;
+  }
+
+  .tableTitle {
+    font-size: 18px;
+  }
+}

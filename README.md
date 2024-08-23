@@ -4,7 +4,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+/*
+
+before running the project
+1. delete the node modules folder
+2. give the command " npm install " in the terminal
+
+3. In the project directory, you can run:
 
 ### `npm start`
 

@@ -1,0 +1,564 @@
+.student-info-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 160px;
+  /* width: 80%; */
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  left: 0px;
+  bottom: 0px;
+  /* overflow-y: scroll; */
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.button-container-desktop {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* max-height:calc(100vh - 100px); */
+  background-color: #2c3e50;
+  height: calc(100vh - 100px);
+  align-items: center;
+  overflow-y: auto;
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.profile-image {
+  width: 140px;
+  height: 150px;
+  margin-top: 10px;
+  border-radius: 10%;
+}
+
+.info-button {
+  width: 150px;
+  padding: 10px;
+  font-size: calc(5px + 1vmin);
+  background-color: #2c3e50;
+  color: #f9f1f1;
+  border-top: 1px solid white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.info-button:hover {
+  background-color: #34495e;
+}
+
+.info-button.active {
+  background-color: #3498db;
+}
+
+.info-button.active:hover {
+  background-color: #5aa4e8;
+}
+
+.info-container {
+  display: flex;
+  padding: 10px;
+  /* width: 90%; */
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.subject-container ul {
+  list-style-type: none;
+}
+
+.subject-container ul li {
+  margin-bottom: 5px;
+}
+
+.year-sem-container ul {
+  list-style-type: none;
+}
+
+.year-sem-container ul li {
+  margin-bottom: 5px;
+}
+
+.desktop-links-button {
+  border: none;
+  display: inline;
+  position: fixed;
+  left: 0;
+}
+/* Add this CSS for dropdown menu */
+.dropdown-mobile-view {
+  display: none;
+}
+
+.dropdown-contents-mobile-view {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  z-index: 1;
+  left: 0; /* Position the dropdown at the left edge of the button */
+  bottom: 100;
+  /* border: 1px solid #3498db;  */
+}
+
+.dropdown-contents-mobile-view button.info-button {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+}
+
+.dropbtn-mobile-view {
+  /* color: rgb(235, 217, 217); */
+  padding: 16px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 820px) {
+  .dropdown-mobile-view {
+    display: inline-block;
+    position: fixed;
+  }
+
+
+  .profile-container-mobileview{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-image-mobileview {
+    display: flex;
+    justify-content: center;
+  }
+  
+
+  .profile-image-mobileview .profile-image{
+    width: 50%;
+    min-width: 250px;
+    height: 100%;
+    max-height: 280px;
+    position: relative;
+    left: 15px;
+    /* top:10px; */
+  }
+
+  .profile-image-mobileview .profileImageActions {
+    display: block;
+    position: relative;
+    right: 15px;
+    top:10px;
+  }
+  .profile-image-mobileview .profileImageIcons{
+    width: 30px;
+    height: 20px;    
+    border-radius: 30%;
+    background-color: rgb(249, 240, 222);
+  }
+
+
+
+  .input-container .imageUploadName .imageuploadCancel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 5px;
+    color: rgb(5, 5, 5);
+  }
+ .input-container{
+  margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+   
+ }
+  .input-container .imageUploadName{
+    max-width: 200px;
+    font-size: small;
+}
+
+  .desktop-links-button {
+    display: none;
+  }
+
+  .info-container {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+
+
+  .student-information-main-container {
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 1200px) {
+ 
+
+ 
+  .student-main-container {
+    flex-direction: column;
+    /* margin-left: 0; */
+  }
+
+}
+
+@media screen and (max-width: 820px) {
+  .student-info-container {
+    flex-direction: column;
+    margin-left: 0;
+  }
+  .button-container {
+    align-items: start;
+  }
+}
+
+@media screen and (min-width: 820px) {
+  .profile-container-mobileview{
+  display: none;
+}
+}
+
+
+
+
+.dropdown-contents-mobile-view.show {
+  display: block;
+  overflow-y: auto;
+}
+
+.student-main-container {
+  display: flex;
+  align-items: center;
+}
+
+.student-information-main-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f9f1f1;
+  margin-top: 20px;
+  height: 100%;
+  /* align-items: center; */
+  /* justify-content: center; */
+  width: 80%;
+  padding: 30px;
+  /* min-width: 300px; */
+}
+
+.Additional-info-Container {
+  /* display: flex; */
+  /* flex-direction: row; */
+  border: 1px solid #f9f1f1;
+  margin-top: 20px;
+  height: 100%;
+  padding: 30px;
+  text-align: center;
+  justify-content: center;
+
+  flex-wrap: wrap;
+  width: 80%;
+  /* min-width: 400px; */
+}
+
+.student-details-text-info {
+  color: #34495e;
+  font-size: calc(8px + 1.1vmin);
+  font-weight: 500;
+  display: flex;
+  margin-bottom: 1px;
+  justify-content: space-between;
+}
+
+.subject-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid grey;
+  padding: 10px;
+  margin-top: 10px;
+  /* color: #34495e; */
+}
+
+.subjectTopic {
+  font-size: calc(8px + 1.1vmin);
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.subjectName {
+  color: #092138;
+  font-size: calc(8px + 1.1vmin);
+  font-weight: 700;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.react-calendar {
+ /* width: 0; */
+  padding: 30px;
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+  .react-calendar {
+    width: 280px;
+    margin: 0 auto;
+    /* padding: 30px; */
+  }
+}
+
+.react-calendar {
+  max-width: 80%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+}
+
+.react-calendar--doubleView {
+  width: 700px;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer > * {
+  width: 50%;
+  margin: 0.5em;
+}
+
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #d10000;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__decade-view__years__year--neighboringDecade,
+.react-calendar__century-view__decades__decade--neighboringCentury {
+  color: #757575;
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em;
+}
+
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 6.6667px;
+  background: none;
+  text-align: center;
+  line-height: 16px;
+  font: inherit;
+  font-size: 0.833em;
+}
+
+.react-calendar__tile:disabled {
+  background-color: #f0f0f0;
+  color: #ababab;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth:disabled,
+.react-calendar__decade-view__years__year--neighboringDecade:disabled,
+.react-calendar__century-view__decades__decade--neighboringCentury:disabled {
+  color: #cdcdcd;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__tile--now {
+  background: #ffff76;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #ffffa9;
+}
+
+.react-calendar__tile--hasActive {
+  background: #76baff;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+
+.react-calendar__tile--active {
+  background: #006edc;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1087ff;
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #e6e6e6;
+}
+
+@media (max-width: 768px) {
+  .react-calendar {
+    width: 280px;
+    margin: 0 auto;
+    /* padding: 30px; */
+  }
+}
+
+
+
+.input-container input[type="file"] {
+  display: none; 
+}
+.input-container{
+  margin-bottom: 5px;
+  max-width: 200px;
+}
+
+.imageUploadName{
+  max-width: 100px;
+  font-size: x-small;
+}
+
+.imageuploadCancel{
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: 5px;
+  color: whitesmoke;
+}
+
+.uploadCancel-btn{
+  display: flex;
+  height: 20px;
+  border-radius: 10%;
+  font-size: small;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border: 1px solid black;
+  color: white;
+  font-weight:bold;
+  background-color: rgb(254, 122, 122);
+}
+
+.buttonActions{
+  /* margin-top: 10px; */
+  margin-bottom: 5px;
+  
+}
+
+.profileImageIcons{
+  border-radius: 50%;
+  color: black;
+  background-color:rgb(255, 255, 255);
+}
+.profileImageActions{
+  top: 8px;
+  right: 5px;
+  position: absolute;
+}
+
+.upload-btn,
+.delete-btn {
+  padding: 2px;
+  background-color: #c2ecfd; 
+  color: rgb(21, 20, 20);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.chooseFileBtn{
+
+  padding: 2px;
+  background-color: #c2ecfd; 
+  color: rgb(21, 20, 20);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.upload-btn:hover,
+.delete-btn:hover {
+  background-color: #cff1d1;
+}
+

@@ -4,6 +4,8 @@
   flex-direction: column;
   align-items: center;
   margin: 20px;
+  overflow-y: auto;
+  max-height: 520px;
 }
 
 .searchDropdown {
@@ -168,7 +170,7 @@ svg {
   font-weight: bolder;
   padding: 5px 10px;
   background-color: #f3f4f5;
-  border: none;  
+  border: none;
   border-radius: 3px;
 }
 

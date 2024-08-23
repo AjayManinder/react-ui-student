@@ -1,0 +1,65 @@
+/* YearSemester.css (or in your main styles file) */
+
+/* Container styling */
+.year-semester-container {
+  margin: 10px 0;
+}
+
+/* Edit mode styling */
+.year-semester-edit-mode {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.year-semester-edit-mode label {
+  margin-right: 5px;
+}
+
+.year-semester-edit-mode input {
+  margin-bottom: 5px;
+}
+
+.year-semester-edit-mode button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: outset;
+  border-radius: 50px;
+}
+
+/* Display mode styling */
+.year-semester-display-mode {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.year-semester-display-mode strong {
+  margin-right: 5px;
+}
+
+.year-semester-display-mode .editButton {
+  margin-top: 10px;
+  background-color: #0d4674;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: outset;
+  margin-right: 10px;
+  border-radius: 50px;
+}
+
+.year-semester-edit-mode .cancelButton {
+  margin-top: 10px;
+  background-color: #ec5a5a;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: outset;
+
+  border-radius: 50px;
+}
