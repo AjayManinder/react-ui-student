@@ -103,6 +103,25 @@ const StudentInfo = () => {
     setDate(newDate);
   };
 
+  const handleUnregisterSubject = async (subjectId, rollNo, fetchSubjects) => {
+    try {
+      // Make a DELETE request to your backend API endpoint
+      const response = await axiosInstance.delete(`/students/${rollNo}/subjects/${subjectId}`);
+  
+      // Check if the request was successful
+      if (response.status === 200) {
+        // Refresh the list of subjects after successful deletion
+        // Optionally, you can implement a more efficient way to update the list without reloading the entire page
+        fetchSubjects(); // Call the function to fetch subjects again
+      } else {
+        // Handle error cases
+        console.error('Failed to unregister subject:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
   return (
     <div className="student-info-container">
       <div className="desktop-links-button">
@@ -525,6 +544,10 @@ const StudentInfo = () => {
                       Download Document
                     </a>
                   </div>
+                  <div> <button onClick={() => handleUnregisterSubject(subject._id)}>
+              Un-Register
+            </button></div>
+                  
                 </li>
               ))}
             </ul>
