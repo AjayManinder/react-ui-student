@@ -11,7 +11,7 @@ const MAX_LOGIN_ATTEMPTS = 5;
 
 //setAuthenticated which we are getting from parent as a prop, which sets the authenticated state in the parent component
 const Login = ({ setAuthenticated }) => {
-  const [email, setEmail] = useState(" ");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginAttempts, setLoginAttempts] = useState(MAX_LOGIN_ATTEMPTS);
   const [disabled, setDisabled] = useState(false);
