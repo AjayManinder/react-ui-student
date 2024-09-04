@@ -18,6 +18,11 @@
     padding: 10px;
     border-radius: 5px;
   }
+
+  li.subject {
+    border: 1px solid skyblue;
+    border-radius: 20px;
+}
   
   .subject h3 {
     margin-top: 0;
@@ -30,8 +35,9 @@
   .register-subject{
     padding: 5px;
     width: 70px;
-    color: rgb(2, 2, 42);
-    background-color: antiquewhite;
+    color: rgb(255, 255, 255);
+    background-color: rgb(75, 95, 115);
+    border-radius: 50px;
 
   }
 

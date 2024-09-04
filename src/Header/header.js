@@ -292,7 +292,7 @@ const Header = ({ authenticated, setAuthenticated }) => {
                   to="/login"
                   onClick={handleLinkClick}
                 >
-                  Login
+                  LOGIN
                 </Link>
               )}
             </div>
